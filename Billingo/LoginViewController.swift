@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var keepMeLoggedIn: UISwitch!
     
     
-    let firebase = Firebase(url: "https://radiant-fire-3136.firebaseio.com")
+    let firebase = Firebase(url: "https://glowing-heat-6814.firebaseio.com")
     
     
     
