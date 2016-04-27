@@ -36,6 +36,14 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onLogout(sender: AnyObject) {
+        // handle user logout -> delete from nsuser defaults all records!
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("username")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("password")
+       
+    }
+    
     @IBAction func onAddGroup(sender: AnyObject) {
     }
     

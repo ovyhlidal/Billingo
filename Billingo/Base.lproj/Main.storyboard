@@ -78,14 +78,14 @@
                         <outlet property="keepMeLoggedIn" destination="Blu-sb-rzn" id="5LS-5J-YJP"/>
                         <outlet property="password" destination="rSK-D2-sIU" id="i0f-FW-Kmh"/>
                         <outlet property="username" destination="aqb-kX-0Ou" id="acT-MF-8a5"/>
-                        <segue destination="5EB-3v-hRD" kind="showDetail" identifier="showGroups" id="vfU-ZR-ojT"/>
+                        <segue destination="zQa-Mm-q6F" kind="push" identifier="showGroups" id="sfm-5q-Xa9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fcz-aB-2Q7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="396" y="437"/>
         </scene>
-        <!--Groups View Controller-->
+        <!--Groups-->
         <scene sceneID="Bko-ki-dwH">
             <objects>
                 <viewController id="zQa-Mm-q6F" customClass="GroupsViewController" customModule="Billingo" customModuleProvider="target" sceneMemberID="viewController">
@@ -105,12 +105,6 @@
                                     <segue destination="bHg-gg-m1Z" kind="show" id="Epj-0R-PSn"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Prehled skupin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ej-AY-BQw">
-                                <rect key="frame" x="0.0" y="0.0" width="114" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aCg-p7-blo">
                                 <rect key="frame" x="20" y="64" width="560" height="460"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -165,16 +159,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="aCg-p7-blo" firstAttribute="top" secondItem="abC-bn-XKQ" secondAttribute="bottom" id="8cI-5f-u0q"/>
+                            <constraint firstItem="aCg-p7-blo" firstAttribute="top" secondItem="abC-bn-XKQ" secondAttribute="bottom" id="FZn-xE-KKL"/>
+                            <constraint firstItem="aCg-p7-blo" firstAttribute="leading" secondItem="yPP-bM-12w" secondAttribute="leadingMargin" id="HeX-8p-6Rd"/>
                             <constraint firstItem="cvR-So-5eq" firstAttribute="top" secondItem="aCg-p7-blo" secondAttribute="bottom" constant="26" id="JnP-Iw-S1U"/>
-                            <constraint firstItem="aCg-p7-blo" firstAttribute="trailing" secondItem="yPP-bM-12w" secondAttribute="trailingMargin" id="PZA-0G-DxQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="aCg-p7-blo" secondAttribute="trailing" id="Pdq-gh-Qpu"/>
                             <constraint firstItem="cvR-So-5eq" firstAttribute="top" secondItem="aCg-p7-blo" secondAttribute="bottom" constant="26" id="S8U-P3-Gq9"/>
                             <constraint firstItem="OkJ-6g-Yz5" firstAttribute="top" secondItem="cvR-So-5eq" secondAttribute="bottom" constant="20" id="ZoH-on-GBg"/>
                             <constraint firstItem="cvR-So-5eq" firstAttribute="centerX" secondItem="yPP-bM-12w" secondAttribute="centerX" id="a8P-T3-teM"/>
-                            <constraint firstItem="aCg-p7-blo" firstAttribute="leading" secondItem="yPP-bM-12w" secondAttribute="leadingMargin" id="mze-i3-jK9"/>
+                            <constraint firstItem="cvR-So-5eq" firstAttribute="top" secondItem="aCg-p7-blo" secondAttribute="bottom" constant="26" id="tvt-Rw-iIw"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="x4W-fR-fOu"/>
+                    <navigationItem key="navigationItem" title="Groups" id="x4W-fR-fOu">
+                        <barButtonItem key="backBarButtonItem" title="Logout" id="1ox-Ja-OO2"/>
+                        <barButtonItem key="rightBarButtonItem" title="LogOut" id="6G1-8I-G27">
+                            <connections>
+                                <action selector="onLogout:" destination="zQa-Mm-q6F" id="x62-R7-ZWp"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addGroupButton" destination="cvR-So-5eq" id="iLI-bb-pgo"/>
                         <outlet property="groupCollectionView" destination="aCg-p7-blo" id="n4r-ab-cVf"/>
@@ -182,7 +184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXk-B6-1nC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1884" y="462"/>
+            <point key="canvasLocation" x="1186" y="437"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Uv5-JK-aX9">
@@ -552,24 +554,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VSg-Xz-gYS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-404" y="431"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="5zr-aE-bFm">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5EB-3v-hRD" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4wL-iM-oLC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="zQa-Mm-q6F" kind="relationship" relationship="rootViewController" id="LUL-mg-zSu"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ld7-lM-479" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1176" y="454"/>
         </scene>
     </scenes>
 </document>
