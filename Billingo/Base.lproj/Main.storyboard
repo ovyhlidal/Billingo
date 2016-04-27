@@ -29,7 +29,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keep me logged in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kh-Mp-Mv4">
                                 <rect key="frame" x="20" y="258" width="142" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Qc-es-Aa7">
@@ -85,10 +85,10 @@
             </objects>
             <point key="canvasLocation" x="396" y="437"/>
         </scene>
-        <!--View Controller-->
+        <!--Groups View Controller-->
         <scene sceneID="Bko-ki-dwH">
             <objects>
-                <viewController id="zQa-Mm-q6F" sceneMemberID="viewController">
+                <viewController id="zQa-Mm-q6F" customClass="GroupsViewController" customModule="Billingo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="abC-bn-XKQ"/>
                         <viewControllerLayoutGuide type="bottom" id="OkJ-6g-Yz5"/>
@@ -101,6 +101,7 @@
                                 <rect key="frame" x="251" y="550" width="99" height="30"/>
                                 <state key="normal" title="Pridat skupinu"/>
                                 <connections>
+                                    <action selector="onAddGroup:" destination="zQa-Mm-q6F" eventType="touchUpInside" id="qXN-iL-kmI"/>
                                     <segue destination="bHg-gg-m1Z" kind="show" id="Epj-0R-PSn"/>
                                 </connections>
                             </button>
@@ -120,7 +121,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BSn-bp-8gx">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="groupCell" id="BSn-bp-8gx" customClass="GroupCollectionViewCell" customModule="Billingo" customModuleProvider="target">
                                         <rect key="frame" x="131" y="0.0" width="299" height="228"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -149,10 +150,17 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <connections>
+                                            <outlet property="groupInfo" destination="pwA-LA-C10" id="38S-gX-zaD"/>
+                                            <outlet property="groupMembers" destination="0Rg-fO-jQ0" id="KMI-SL-xGr"/>
+                                            <outlet property="groupName" destination="5Ga-bb-O19" id="tXr-Tb-ByO"/>
                                             <segue destination="NzH-P3-QsH" kind="presentation" id="v3i-LW-1Vw"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="zQa-Mm-q6F" id="Nwg-iX-lgm"/>
+                                    <outlet property="delegate" destination="zQa-Mm-q6F" id="XeD-tl-G8H"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -167,6 +175,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="x4W-fR-fOu"/>
+                    <connections>
+                        <outlet property="addGroupButton" destination="cvR-So-5eq" id="iLI-bb-pgo"/>
+                        <outlet property="groupCollectionView" destination="aCg-p7-blo" id="n4r-ab-cVf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXk-B6-1nC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
