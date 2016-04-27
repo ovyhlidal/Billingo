@@ -25,6 +25,15 @@ class LoginViewController: UIViewController {
         
         self.title = "Welcome to Billingo"
         
+        if self.alredyLoggedIn() {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            
+            let user = defaults.objectForKey("username") as! String
+            let pw = defaults.objectForKey("password") as! String
+            
+            self.authenticateUserWithFirebase(user, password: pw)
+        }
+        
         
         // Do any additional setup after loading the view.
     }
@@ -60,7 +69,8 @@ class LoginViewController: UIViewController {
                     self.firebase.authUser(loginTextField.text, password: passwordTextField.text, withCompletionBlock: { (error, auth) in
                         if(!auth.uid.isEmpty)
                         {
-                             self.performSegueWithIdentifier("showGroups", sender: nil)
+                            self.saveUser(loginTextField.text!, password:  passwordTextField.text!)
+                            self.performSegueWithIdentifier("showGroups", sender: nil)
                         }
                     })
                 }
@@ -95,22 +105,55 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func onLogin(sender: AnyObject) {
-        print("Login btn")
         
-        self.firebase.authUser(username.text, password: password.text,
+        self.authenticateUserWithFirebase(username.text!, password: password.text!)
+    }
+    
+    func authenticateUserWithFirebase(username:String, password:String) -> Void {
+        
+        self.firebase.authUser(username, password: password,
                                withCompletionBlock: { (error, auth) in
                                 if error != nil {
                                     // There was an error logging in to this account
-                                    
-                                    self.onCreateAccount(sender)
+                                    // handle this error better
+                                    self.onCreateAccount(self)
                                     
                                 } else {
                                     // We are now logged in
+                                    self.saveUser(username, password: password)
                                     self.performSegueWithIdentifier("showGroups", sender: nil)
                                     
                                 }        })
+
+    }
+    
+    func saveUser(username: String, password: String){
+        if keepMeLoggedIn.on {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setObject(username, forKey: "username")
+            defaults.setObject(password, forKey: "password")
+            defaults.setObject(NSDate(), forKey: "lastLogin")
+        }
+    }
+    
+    
+    func alredyLoggedIn() -> Bool {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        let user = defaults.objectForKey("username") as? String
+        let pw = defaults.objectForKey("password") as? String
         
         
+        if user != nil && pw != nil{
+            if !(user!.isEmpty  && pw!.isEmpty) {
+                print("successfull load of credentials")
+                return true
+            }
+        }
+        
+        
+        
+        return false
     }
     
     override func viewDidAppear(animated: Bool) {
