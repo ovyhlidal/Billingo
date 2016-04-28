@@ -17,17 +17,52 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     let reuseIdentifier = "groupCell"
     
+    func loadAndDisplayGrubsFromServer(){
+        //TO DO: remove arbitrary load in final version from info.plist
+        let url = NSURL(string: "http://private-04fef-firsttest23.apiary-mock.com/grubsTest")!
+        let request = NSMutableURLRequest(URL: url)
+        
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if let response = response, data = data {
+                //may check response
+                var jsonRetString: [[String:AnyObject]]!
+                do{
+                    jsonRetString = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String:AnyObject]]
+                }catch{
+                    print(error)
+                    return
+                }
+                if let groupJsonArray = jsonRetString as? [[String: AnyObject]] {
+                    for groupJson in groupJsonArray {
+                        if let groupID = groupJson["id"] as! String?,
+                            let groupName = groupJson["name"] as! String?{
+                            var groupMembers:[String] = []
+                            for groupMember in groupJson["members"] as! [[String: AnyObject]]{
+                                if let groupMemberString = groupMember["id"] as! String?{
+                                    groupMembers.append(groupMemberString)
+                                }
+                            }
+                            self.groups.append(Group(setId: groupID , setName: groupName, setMembers: groupMembers))
+                        }
+                    }
+                }
+                
+                
+                self.groupCollectionView.reloadData()
+            } else {
+                print(error)
+            }
+        }
+        
+        task.resume()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        groups.append(Group())
-        groups.append(Group())
-        groups.append(Group())
-        groups.append(Group())
-        groups.append(Group())
+        loadAndDisplayGrubsFromServer()
         
-        groupCollectionView.reloadData()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -62,8 +97,14 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! GroupCollectionViewCell
         // Configure the cell
-        cell.groupName.text = "Test"
-        
+        cell.groupName.text = groups[indexPath.item].name
+        var memberText = ""
+        for member in groups[indexPath.item].members {
+            memberText += member
+            memberText += ", "
+        }
+        memberText.removeAtIndex(memberText.endIndex.predecessor().predecessor())   //remove last two letters ", "
+        cell.groupMembers.text = memberText
         return cell
     }
     

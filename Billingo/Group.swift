@@ -9,5 +9,21 @@
 import UIKit
 
 class Group: NSObject {
-
+    var id = "noID"
+    var name = "noName"
+    var members:[String] = []
+    
+    override init() {
+        super.init()
+        id = "Testing ID"
+        name = "name Test"
+        members = ["test Jan", "test Peter", "test Dory"]
+    }
+    
+    init(setId:String, setName:String, setMembers:[String]) {
+        super.init()
+        id = setId
+        name = setName
+        members = setMembers
+    }
 }
