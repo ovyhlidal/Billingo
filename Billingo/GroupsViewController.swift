@@ -14,7 +14,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     @IBOutlet weak var addGroupButton: UIButton!
     
     var groups : Array = [Group]()
-    
+    let subview: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let reuseIdentifier = "groupCell"
     
     func loadAndDisplayGrubsFromServer(){
@@ -48,8 +48,11 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                     }
                 }
                 
-                
-                self.groupCollectionView.reloadData()
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.groupCollectionView.reloadData()
+                    self.subview.stopAnimating()
+                    self.subview.removeFromSuperview()
+                }
             } else {
                 print(error)
             }
@@ -60,7 +63,9 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        subview.startAnimating()
+        subview.center = self.view.center
+        self.view.addSubview(subview)
         loadAndDisplayGrubsFromServer()
         
         // Do any additional setup after loading the view, typically from a nib.
