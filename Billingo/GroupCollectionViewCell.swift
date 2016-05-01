@@ -9,7 +9,6 @@
 import UIKit
 
 class GroupCollectionViewCell: UICollectionViewCell {
-    
     @IBOutlet weak var groupName: UILabel!
     @IBOutlet weak var groupMembers: UILabel!
     @IBOutlet weak var groupInfo: UILabel!

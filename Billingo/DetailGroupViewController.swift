@@ -27,10 +27,6 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         self.tableView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        expenses.append(Expense())
-        expenses.append(Expense())
-        expenses.append(Expense())
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -53,7 +49,10 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ExpenseTableViewCell
-        cell.expenseName.text = "Test"
+        let expense = expenses[indexPath.row]
+        cell.expenseName.text = expense.expenseName
+        cell.expenseCost.text = "Cost: " + expense.cost
+        cell.numberOfExpenseMembers.text = String(expense.members.count)
         return cell
     }
     

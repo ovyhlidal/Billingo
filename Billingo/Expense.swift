@@ -9,5 +9,15 @@
 import UIKit
 
 class Expense: NSObject {
+    var expenseId: String
+    var expenseName: String
+    var cost: String
+    var members: [String]
     
+    init(expenseId: String, expenseName: String, cost: String, members: [String]) {
+        self.expenseId = expenseId
+        self.expenseName = expenseName
+        self.cost = cost
+        self.members = members
+    }
 }

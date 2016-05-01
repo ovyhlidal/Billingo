@@ -12,6 +12,7 @@ class Group: NSObject {
     var id = "noID"
     var name = "noName"
     var members:[String] = []
+    var expenses:[Expense] = []
     
     override init() {
         super.init()
@@ -20,10 +21,11 @@ class Group: NSObject {
         members = ["test Jan", "test Peter", "test Dory"]
     }
     
-    init(setId:String, setName:String, setMembers:[String]) {
+    init(id:String, name:String, members:[String], expenses: [Expense]) {
         super.init()
-        id = setId
-        name = setName
-        members = setMembers
+        self.id = id
+        self.name = name
+        self.members = members
+        self.expenses = expenses
     }
 }

@@ -17,50 +17,6 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     let subview: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let reuseIdentifier = "groupCell"
     
-    func loadAndDisplayGrubsFromServer(){
-        //TO DO: remove arbitrary load in final version from info.plist
-        let url = NSURL(string: "http://private-04fef-firsttest23.apiary-mock.com/grubsTest")!
-        let request = NSMutableURLRequest(URL: url)
-        
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            if let response = response, data = data {
-                //may check response
-                var jsonRetString: [[String:AnyObject]]!
-                do{
-                    jsonRetString = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String:AnyObject]]
-                }catch{
-                    print(error)
-                    return
-                }
-                if let groupJsonArray = jsonRetString as? [[String: AnyObject]] {
-                    for groupJson in groupJsonArray {
-                        if let groupID = groupJson["id"] as! String?,
-                            let groupName = groupJson["name"] as! String?{
-                            var groupMembers:[String] = []
-                            for groupMember in groupJson["members"] as! [[String: AnyObject]]{
-                                if let groupMemberString = groupMember["id"] as! String?{
-                                    groupMembers.append(groupMemberString)
-                                }
-                            }
-                            self.groups.append(Group(setId: groupID , setName: groupName, setMembers: groupMembers))
-                        }
-                    }
-                }
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.groupCollectionView.reloadData()
-                    self.subview.stopAnimating()
-                    self.subview.removeFromSuperview()
-                }
-            } else {
-                print(error)
-            }
-        }
-        
-        task.resume()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         subview.startAnimating()
@@ -69,6 +25,18 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         loadAndDisplayGrubsFromServer()
         
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showGroupDetail" {
+            if let indexPath = groupCollectionView!.indexPathForCell(sender as! GroupCollectionViewCell){
+                var group: Group
+                group = groups[indexPath.item]
+                let nav = segue.destinationViewController as! UINavigationController
+                let controller = nav.topViewController as! DetailGroupViewController
+                controller.expenses = group.expenses
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -112,7 +80,61 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         cell.groupMembers.text = memberText
         return cell
     }
-    
-    
 }
 
+extension GroupsViewController {
+    func loadAndDisplayGrubsFromServer(){
+        //TO DO: remove arbitrary load in final version from info.plist
+        let url = NSURL(string: "http://private-3a6f3-billingo1.apiary-mock.com/questions")!
+        let request = NSMutableURLRequest(URL: url)
+        
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if let response = response, data = data {
+                //may check response
+                var jsonRetString: [[String:AnyObject]]!
+                do{
+                    jsonRetString = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String:AnyObject]]
+                }catch{
+                    print(error)
+                    return
+                }
+                if let groupJsonArray = jsonRetString as? [[String: AnyObject]] {
+                    for groupJson in groupJsonArray {
+                        if let groupID = groupJson["id"] as! String?,
+                            let groupName = groupJson["name"] as! String?{
+                            var groupMembers: [String] = []
+                            for groupMember in groupJson["members"] as! [[String: AnyObject]]{
+                                if let groupMemberString = groupMember["id"] as! String?{
+                                    groupMembers.append(groupMemberString)
+                                }
+                            }
+                            var groupExpenses: [Expense] = []
+                            for groupExpense in groupJson["expenses"] as! [[String: AnyObject]]{
+                                if let groupExpenseId = groupExpense["id"], let groupExpenseName = groupExpense["expenseName"], let groupExpenseCost = groupExpense["cost"]{
+                                    var groupExpenseMembers: [String] = []
+                                    for groupExpenseMember in groupExpense["members"] as! [[String: AnyObject]]{
+                                        if let expenseMemberString = groupExpenseMember["id"] as! String?{
+                                            groupExpenseMembers.append(expenseMemberString)
+                                        }
+                                    }
+                                    groupExpenses.append(Expense(expenseId: groupExpenseId as! String, expenseName: groupExpenseName as! String, cost: groupExpenseCost as! String, members: groupExpenseMembers))
+                                }
+                            }
+                            self.groups.append(Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses))
+                        }
+                    }
+                }
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.groupCollectionView.reloadData()
+                    self.subview.stopAnimating()
+                    self.subview.removeFromSuperview()
+                }
+            } else {
+                print(error)
+            }
+        }
+        task.resume()
+    }
+}
