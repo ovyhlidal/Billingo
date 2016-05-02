@@ -26,9 +26,12 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         expenseName.text = expense?.expenseName
-        expenseCreateDate.text = String(expense?.expenseCreateDate)
+        print(String(expense?.expenseCreateDate))
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
+        expenseCreateDate.text = dateFormatter.stringFromDate((expense?.expenseCreateDate)!)
         expenseCreator.text = expense?.expenseCreator
-        expenseCost.text = expense?.cost
+        expenseCost.text = "Výdej: " + (expense?.cost)!
         self.tableView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
@@ -43,6 +46,11 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         return 1
     }
     
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    {
+        return "Dlužníci"
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (expense?.members.count)!
     }
@@ -53,7 +61,7 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         cell.usrName.text = user
         let debt = ((Int((expense?.cost)!)! / Int((expense?.members.count)!)))
         //print(debt)
-        cell.userDebt.text = "Debt:" + String(debt)
+        cell.userDebt.text = "Dlh:" + String(debt)
         return cell
     }
 
