@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D09DF451CD6CF18008D415F /* ExpenseDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D09DF441CD6CF18008D415F /* ExpenseDetailTableViewCell.swift */; };
+		1D09DF471CD6CFBB008D415F /* DetailExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D09DF461CD6CFBB008D415F /* DetailExpenseViewController.swift */; };
 		1D4DC6611CD1EEC700258417 /* DetailGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4DC6601CD1EEC700258417 /* DetailGroupViewController.swift */; };
 		1D5DEBD91CD20CE600798520 /* ExpenseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */; };
 		1D5DEBDB1CD2104500798520 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DEBDA1CD2104500798520 /* Expense.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D09DF441CD6CF18008D415F /* ExpenseDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseDetailTableViewCell.swift; sourceTree = "<group>"; };
+		1D09DF461CD6CFBB008D415F /* DetailExpenseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailExpenseViewController.swift; sourceTree = "<group>"; };
 		1D4DC6601CD1EEC700258417 /* DetailGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailGroupViewController.swift; sourceTree = "<group>"; };
 		1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseTableViewCell.swift; sourceTree = "<group>"; };
 		1D5DEBDA1CD2104500798520 /* Expense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
@@ -68,6 +72,7 @@
 		1D7FBDF61CD66B42008ACFC9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1D09DF441CD6CF18008D415F /* ExpenseDetailTableViewCell.swift */,
 				2D39B2021CD092F500E8803C /* GroupCollectionViewCell.swift */,
 				1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */,
 			);
@@ -80,6 +85,7 @@
 				1D4DC6601CD1EEC700258417 /* DetailGroupViewController.swift */,
 				2DBA65D11CB66C78004B61BD /* LoginViewController.swift */,
 				2D2578871CAE534A00CEB3D2 /* GroupsViewController.swift */,
+				1D09DF461CD6CFBB008D415F /* DetailExpenseViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -172,6 +178,7 @@
 				TargetAttributes = {
 					2D2578811CAE534A00CEB3D2 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = AXC2TW43H3;
 					};
 				};
 			};
@@ -261,12 +268,14 @@
 			files = (
 				1D5DEBD91CD20CE600798520 /* ExpenseTableViewCell.swift in Sources */,
 				1D4DC6611CD1EEC700258417 /* DetailGroupViewController.swift in Sources */,
+				1D09DF471CD6CFBB008D415F /* DetailExpenseViewController.swift in Sources */,
 				2DBA65D21CB66C78004B61BD /* LoginViewController.swift in Sources */,
 				2D2578881CAE534A00CEB3D2 /* GroupsViewController.swift in Sources */,
 				2D2578861CAE534A00CEB3D2 /* AppDelegate.swift in Sources */,
 				2D39B2071CD0960F00E8803C /* KeychainWrapper.m in Sources */,
 				1D5DEBDB1CD2104500798520 /* Expense.swift in Sources */,
 				2D39B2031CD092F500E8803C /* GroupCollectionViewCell.swift in Sources */,
+				1D09DF451CD6CF18008D415F /* ExpenseDetailTableViewCell.swift in Sources */,
 				2D39B2011CD0924E00E8803C /* Group.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,10 +391,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Billingo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mu.Billingo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Billingo/Billingo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -398,10 +410,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Billingo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mu.Billingo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Billingo/Billingo-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

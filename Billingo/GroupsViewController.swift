@@ -111,14 +111,14 @@ extension GroupsViewController {
                             }
                             var groupExpenses: [Expense] = []
                             for groupExpense in groupJson["expenses"] as! [[String: AnyObject]]{
-                                if let groupExpenseId = groupExpense["id"], let groupExpenseName = groupExpense["expenseName"], let groupExpenseCost = groupExpense["cost"]{
+                                if let groupExpenseId = groupExpense["id"], let groupExpenseCreateDate = groupExpense["createDate"], let groupExpenseCreator = groupExpense["expenseCreator"],let groupExpenseName = groupExpense["expenseName"], let groupExpenseCost = groupExpense["cost"]{
                                     var groupExpenseMembers: [String] = []
                                     for groupExpenseMember in groupExpense["members"] as! [[String: AnyObject]]{
                                         if let expenseMemberString = groupExpenseMember["id"] as! String?{
                                             groupExpenseMembers.append(expenseMemberString)
                                         }
                                     }
-                                    groupExpenses.append(Expense(expenseId: groupExpenseId as! String, expenseName: groupExpenseName as! String, cost: groupExpenseCost as! String, members: groupExpenseMembers))
+                                    groupExpenses.append(Expense(expenseId: groupExpenseId as! String, expenseName: groupExpenseName as! String, expenseCreateDate: NSDate(timeIntervalSince1970: Double(groupExpenseCreateDate as! String)!),expenseCreator: groupExpenseCreator as! String, cost: groupExpenseCost as! String, members: groupExpenseMembers))
                                 }
                             }
                             self.groups.append(Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses))

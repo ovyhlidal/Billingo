@@ -8,11 +8,11 @@
 
 import UIKit
 
-let reuseIdentifier = "ExpenseCell"
 
 class DetailGroupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    
+    let reuseIdentifier = "ExpenseCell"
+    let reuseIdentifierForSegue = "showExpenseDetail"
     var expenses: Array = [Expense]()
     @IBOutlet weak var tableView: UITableView!
     
@@ -24,7 +24,6 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         //self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         
-        self.tableView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         // Uncomment the following line to preserve selection between presentations
@@ -32,6 +31,17 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == reuseIdentifierForSegue {
+            if let indexPath = self.tableView.indexPathForCell(sender as! ExpenseTableViewCell) {
+                let expense = expenses[indexPath.row]
+                let nav = segue.destinationViewController as! UINavigationController
+                let controller = nav.topViewController as! DetailExpenseViewController
+                controller.expense = expense
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
