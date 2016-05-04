@@ -28,7 +28,7 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         expenseName.text = expense?.expenseName
         print(String(expense?.expenseCreateDate))
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         expenseCreateDate.text = dateFormatter.stringFromDate((expense?.expenseCreateDate)!)
         expenseCreator.text = expense?.expenseCreator
         expenseCost.text = "Výdej: " + (expense?.cost)!

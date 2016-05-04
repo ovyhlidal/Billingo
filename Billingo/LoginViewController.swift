@@ -172,6 +172,16 @@ class LoginViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        let name = "Pattern~\(self.title!)"
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: name)
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         

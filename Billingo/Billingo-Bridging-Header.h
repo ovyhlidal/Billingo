@@ -4,3 +4,4 @@
 
 // for fingerprint scanner
 #import "KeychainWrapper.h"
+#import <Google/Analytics.h>

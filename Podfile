@@ -5,5 +5,6 @@ use_frameworks!
 
 target 'Billingo' do
 pod 'Firebase', '>= 2.5.1'
+pod 'Google/Analytics'
 end
 

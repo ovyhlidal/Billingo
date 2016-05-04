@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D09DF451CD6CF18008D415F /* ExpenseDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D09DF441CD6CF18008D415F /* ExpenseDetailTableViewCell.swift */; };
 		1D09DF471CD6CFBB008D415F /* DetailExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D09DF461CD6CFBB008D415F /* DetailExpenseViewController.swift */; };
+		1D2601321CD9ECE80063392B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D2601311CD9ECE80063392B /* GoogleService-Info.plist */; };
 		1D4DC6611CD1EEC700258417 /* DetailGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4DC6601CD1EEC700258417 /* DetailGroupViewController.swift */; };
 		1D5DEBD91CD20CE600798520 /* ExpenseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */; };
 		1D5DEBDB1CD2104500798520 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DEBDA1CD2104500798520 /* Expense.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		1D09DF441CD6CF18008D415F /* ExpenseDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseDetailTableViewCell.swift; sourceTree = "<group>"; };
 		1D09DF461CD6CFBB008D415F /* DetailExpenseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailExpenseViewController.swift; sourceTree = "<group>"; };
+		1D2601311CD9ECE80063392B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1D4DC6601CD1EEC700258417 /* DetailGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailGroupViewController.swift; sourceTree = "<group>"; };
 		1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseTableViewCell.swift; sourceTree = "<group>"; };
 		1D5DEBDA1CD2104500798520 /* Expense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				2D2578891CAE534A00CEB3D2 /* Main.storyboard */,
 				2D25788C1CAE534A00CEB3D2 /* Assets.xcassets */,
 				2D25788E1CAE534A00CEB3D2 /* LaunchScreen.storyboard */,
+				1D2601311CD9ECE80063392B /* GoogleService-Info.plist */,
 				2D2578911CAE534A00CEB3D2 /* Info.plist */,
 				2D39B2041CD0960E00E8803C /* Billingo-Bridging-Header.h */,
 			);
@@ -208,6 +211,7 @@
 				2D2578901CAE534A00CEB3D2 /* LaunchScreen.storyboard in Resources */,
 				2D25788D1CAE534A00CEB3D2 /* Assets.xcassets in Resources */,
 				2D25788B1CAE534A00CEB3D2 /* Main.storyboard in Resources */,
+				1D2601321CD9ECE80063392B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
