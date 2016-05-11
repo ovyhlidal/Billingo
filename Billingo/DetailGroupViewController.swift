@@ -62,7 +62,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         let expense = expenses[indexPath.row]
         cell.expenseName.text = expense.expenseName
         cell.expenseCost.text = "Cost: " + expense.cost
-        cell.numberOfExpenseMembers.text = String(expense.members.count)
+        cell.numberOfExpenseMembers.text = String(expense.payments.count)
         return cell
     }
     

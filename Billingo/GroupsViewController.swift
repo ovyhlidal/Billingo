@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class GroupsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -80,12 +81,85 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         cell.groupMembers.text = memberText
         return cell
     }
+    
+    func getUserNameFromUserID(userID: String) -> String{
+        let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
+        var name = ""
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            name = (snapshot.value.objectForKey("\(userID)/name") as? String)!
+        })
+        return name
+    }
 }
 
 extension GroupsViewController {
     func loadAndDisplayGrubsFromServer(){
         //TO DO: remove arbitrary load in final version from info.plist
-        let url = NSURL(string: "http://private-3a6f3-billingo1.apiary-mock.com/questions")!
+        
+        let selfUserRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/a031b1f3-4b7a-447b-8174-f6ac25b8a6e5/groups/")
+        selfUserRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            
+            for var groupValue in snapshot.children {
+                if let groupID = snapshot.value[groupValue.key] as? String {
+                    let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
+                    let membersRef = groupRef.childByAppendingPath("members")
+                    let expensesRef = groupRef.childByAppendingPath("expenses")
+                        
+                    var groupMembers:[String] = []
+                    membersRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                        for var member in snapshot.children {
+                            if let memberID = snapshot.value[member.key] as? String {
+                                groupMembers.append(memberID)
+                            }
+                        }
+                    })
+                        
+                    var groupExpenses:[Expense] = []
+                    expensesRef.observeSingleEventOfType(.Value, withBlock: {snapshot in
+                        for var expense in snapshot.children {
+                            
+                            var payments:[Payment] = []
+                            let paymentRef = expensesRef.childByAppendingPath("\(expense.key)/payments")
+                            paymentRef.observeSingleEventOfType(.Value, withBlock: {snapshot in
+                                for payment in snapshot.children{
+                                    if let cost = snapshot.value[payment.key] as? Double {
+                                        payments.append(Payment(userID: payment.key, cost: cost ))
+                                    }
+                                }
+                            })
+                            
+                            if let expenseName = snapshot.value["\(expense.key)/name"] as? String,
+                            let expenseCreateDate = snapshot.value["\(expense.key)/createTime"] as? NSDate,
+                            let expenseCreator = snapshot.value["\(expense.key)/payerUID"] as? String,
+                            let cost = snapshot.value["\(expense.key)/totalCost"] as? String{
+                                groupExpenses.append(Expense(expenseId: expense.key, expenseName: expenseName, expenseCreateDate: expenseCreateDate, expenseCreator: expenseCreator, cost: cost, payments: payments  ))
+                            }
+                        }
+                    })
+                    
+                    var firstIteration = true
+                    groupRef.observeEventType(.Value, withBlock: { snapshot in
+                        if let groupName = snapshot.value["name"] as? String{
+                            self.groups.append(Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses))
+                        }
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.groupCollectionView.reloadData()
+                        }
+                        if firstIteration {
+                            firstIteration = false
+                            self.subview.stopAnimating()
+                            self.subview.removeFromSuperview()
+                        }
+                    })
+                }
+            }
+        
+        }, withCancelBlock: { error in
+            print(error.description)
+        })
+        
+        
+        /*let url = NSURL(string: "http://private-3a6f3-billingo1.apiary-mock.com/questions")!
         let request = NSMutableURLRequest(URL: url)
         
         let session = NSURLSession.sharedSession()
@@ -136,5 +210,6 @@ extension GroupsViewController {
             }
         }
         task.resume()
+        */
     }
 }

@@ -14,14 +14,14 @@ class Expense: NSObject {
     var expenseCreateDate: NSDate
     var expenseCreator: String
     var cost: String
-    var members: [String]
+    var payments: [Payment]
     
-    init(expenseId: String, expenseName: String, expenseCreateDate: NSDate, expenseCreator: String,cost: String, members: [String]) {
+    init(expenseId: String, expenseName: String, expenseCreateDate: NSDate, expenseCreator: String,cost: String, payments: [Payment]) {
         self.expenseId = expenseId
         self.expenseName = expenseName
         self.expenseCreateDate = expenseCreateDate
         self.expenseCreator = expenseCreator
         self.cost = cost
-        self.members = members
+        self.payments = payments
     }
 }

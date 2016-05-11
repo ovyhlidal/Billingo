@@ -52,14 +52,14 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (expense?.members.count)!
+        return (expense?.payments.count)!
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ExpenseDetailTableViewCell
-        let user: String = (self.expense?.members[indexPath.row])!
+        let user: String = (self.expense?.payments[indexPath.row])!
         cell.usrName.text = user
-        let debt = ((Int((expense?.cost)!)! / Int((expense?.members.count)!)))
+        let debt = ((Int((expense?.cost)!)! / Int((expense?.payments.count)!)))
         //print(debt)
         cell.userDebt.text = "Dlh:" + String(debt)
         return cell
