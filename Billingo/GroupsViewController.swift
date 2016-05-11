@@ -28,6 +28,16 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         // Do any additional setup after loading the view, typically from a nib.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        let name = "Pattern~\("GroupsViewController")"
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: name)
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showGroupDetail" {
             if let indexPath = groupCollectionView!.indexPathForCell(sender as! GroupCollectionViewCell){

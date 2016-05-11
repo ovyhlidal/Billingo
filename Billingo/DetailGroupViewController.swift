@@ -33,6 +33,17 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        let name = "Pattern~\("DetailGroupViewController")"
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: name)
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
+    
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == reuseIdentifierForSegue {
             if let indexPath = self.tableView.indexPathForCell(sender as! ExpenseTableViewCell) {
