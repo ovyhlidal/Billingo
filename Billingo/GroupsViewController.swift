@@ -83,11 +83,13 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         // Configure the cell
         cell.groupName.text = groups[indexPath.item].name
         var memberText = ""
-        for member in groups[indexPath.item].members {
+        for member in groups[indexPath.item].membersNames {
             memberText += member
             memberText += ", "
         }
-        memberText.removeAtIndex(memberText.endIndex.predecessor().predecessor())   //remove last two letters ", "
+        if(memberText.characters.count > 2){
+            memberText.removeAtIndex(memberText.endIndex.predecessor().predecessor())   //remove last two letters ", "
+        }
         cell.groupMembers.text = memberText
         return cell
     }
@@ -96,130 +98,115 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
         var name = ""
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            name = (snapshot.value.objectForKey("\(userID)/name") as? String)!
+            name = (snapshot.value.objectForKey("\(userID)/fullname") as? String)!
         })
         return name
     }
-}
-
-extension GroupsViewController {
-    func loadAndDisplayGrubsFromServer(){
-        //TO DO: remove arbitrary load in final version from info.plist
-        
-        let selfUserRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/a031b1f3-4b7a-447b-8174-f6ac25b8a6e5/groups/")
-        selfUserRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            
-            for var groupValue in snapshot.children {
-                if let groupID = snapshot.value[groupValue.key] as? String {
-                    let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
-                    let membersRef = groupRef.childByAppendingPath("members")
-                    let expensesRef = groupRef.childByAppendingPath("expenses")
-                        
-                    var groupMembers:[String] = []
-                    membersRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                        for var member in snapshot.children {
-                            if let memberID = snapshot.value[member.key] as? String {
-                                groupMembers.append(memberID)
-                            }
-                        }
-                    })
-                        
-                    var groupExpenses:[Expense] = []
-                    expensesRef.observeSingleEventOfType(.Value, withBlock: {snapshot in
-                        for var expense in snapshot.children {
-                            
-                            var payments:[Payment] = []
-                            let paymentRef = expensesRef.childByAppendingPath("\(expense.key)/payments")
-                            paymentRef.observeSingleEventOfType(.Value, withBlock: {snapshot in
-                                for payment in snapshot.children{
-                                    if let cost = snapshot.value[payment.key] as? Double {
-                                        payments.append(Payment(userID: payment.key, cost: cost ))
-                                    }
-                                }
-                            })
-                            
-                            if let expenseName = snapshot.value["\(expense.key)/name"] as? String,
-                            let expenseCreateDate = snapshot.value["\(expense.key)/createTime"] as? NSDate,
-                            let expenseCreator = snapshot.value["\(expense.key)/payerUID"] as? String,
-                            let cost = snapshot.value["\(expense.key)/totalCost"] as? String{
-                                groupExpenses.append(Expense(expenseId: expense.key, expenseName: expenseName, expenseCreateDate: expenseCreateDate, expenseCreator: expenseCreator, cost: cost, payments: payments  ))
-                            }
-                        }
-                    })
-                    
-                    var firstIteration = true
-                    groupRef.observeEventType(.Value, withBlock: { snapshot in
-                        if let groupName = snapshot.value["name"] as? String{
-                            self.groups.append(Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses))
-                        }
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.groupCollectionView.reloadData()
-                        }
+    
+    func loadAndDisplayGroupsNames(){
+        let MyID = "a031b1f3-4b7a-447b-8174-f6ac25b8a6e5"
+        let selfUserRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(MyID)/groups/")
+        selfUserRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+            if let groupID = snapshot.value as? String {
+                let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
+                let groupMembersNames:[String] = []
+                let groupMembersIDs:[String] = []
+                let groupExpenses:[Expense] = []
+                
+                var firstIteration = true
+                groupRef.observeEventType(.Value, withBlock: { snapshot in
+                    if let groupName = snapshot.value["name"] as? String{
+                        let group = Group(id: groupID , name: groupName, membersNames: groupMembersNames, membersIDs: groupMembersIDs, expenses: groupExpenses)
+                        self.groups.append(group)
+                        let GroupIndex = self.groups.indexOf(group)
+                        self.loadAndDisplayGroupMembers(GroupIndex)
+                        self.loadGroupExpenseAndDisplaySum(GroupIndex)
+                    }
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.groupCollectionView.reloadData()
                         if firstIteration {
                             firstIteration = false
                             self.subview.stopAnimating()
                             self.subview.removeFromSuperview()
                         }
-                    })
-                }
+                    }
+                })
             }
-        
-        }, withCancelBlock: { error in
-            print(error.description)
         })
         
+    }
+    
+    func loadAndDisplayGroupMembers(groupIndex:Int?){
+        let group = groups[groupIndex!]
+        print(group.id)
+        let membersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/members")
+        membersRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+            if let memberID = snapshot.value as? String {
+                group.membersIDs.append(memberID)
+                let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(memberID)/fullname")
+                userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    let name = (snapshot.value as? String)!
+                    group.membersNames.append(name)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.groupCollectionView.reloadData()
+                    }
+                })
+            }
+        })
+    }
+    
+    func loadGroupExpenseAndDisplaySum(groupIndex:Int?){
+        print ("here")
+        let group = groups[groupIndex!]
+        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/expenses/")
+        expensesRef.observeEventType(.ChildAdded, withBlock: {snapshot in
         
-        /*let url = NSURL(string: "http://private-3a6f3-billingo1.apiary-mock.com/questions")!
-        let request = NSMutableURLRequest(URL: url)
-        
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            if let response = response, data = data {
-                //may check response
-                var jsonRetString: [[String:AnyObject]]!
-                do{
-                    jsonRetString = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String:AnyObject]]
-                }catch{
-                    print(error)
-                    return
-                }
-                if let groupJsonArray = jsonRetString as? [[String: AnyObject]] {
-                    for groupJson in groupJsonArray {
-                        if let groupID = groupJson["id"] as! String?,
-                            let groupName = groupJson["name"] as! String?{
-                            var groupMembers: [String] = []
-                            for groupMember in groupJson["members"] as! [[String: AnyObject]]{
-                                if let groupMemberString = groupMember["id"] as! String?{
-                                    groupMembers.append(groupMemberString)
-                                }
-                            }
-                            var groupExpenses: [Expense] = []
-                            for groupExpense in groupJson["expenses"] as! [[String: AnyObject]]{
-                                if let groupExpenseId = groupExpense["id"], let groupExpenseCreateDate = groupExpense["createDate"], let groupExpenseCreator = groupExpense["expenseCreator"],let groupExpenseName = groupExpense["expenseName"], let groupExpenseCost = groupExpense["cost"]{
-                                    var groupExpenseMembers: [String] = []
-                                    for groupExpenseMember in groupExpense["members"] as! [[String: AnyObject]]{
-                                        if let expenseMemberString = groupExpenseMember["id"] as! String?{
-                                            groupExpenseMembers.append(expenseMemberString)
-                                        }
-                                    }
-                                    groupExpenses.append(Expense(expenseId: groupExpenseId as! String, expenseName: groupExpenseName as! String, expenseCreateDate: NSDate(timeIntervalSince1970: Double(groupExpenseCreateDate as! String)!),expenseCreator: groupExpenseCreator as! String, cost: groupExpenseCost as! String, members: groupExpenseMembers))
-                                }
-                            }
-                            self.groups.append(Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses))
+            let payments:[Payment] = []
+            
+            if let expenseName = snapshot.value["reason"] as? String,
+            let expenseCreatorID = snapshot.value["payerUID"] as? String,
+            let cost = snapshot.value["totalCost"] as? Double,
+            let expenseCreateDate = snapshot.value["createTime"] as? Double{
+                let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(expenseCreatorID)/fullname")
+                userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    if let expenseCreatorName = snapshot.value as? String{
+                        let expense = Expense(expenseId: snapshot.key, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments  )
+                        self.groups[groupIndex!].expenses.append(expense)
+                        self.loadPaymants(groupIndex, expenseIndex: self.groups[groupIndex!].expenses.indexOf(expense))
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.groupCollectionView.reloadData()
                         }
                     }
-                }
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.groupCollectionView.reloadData()
-                    self.subview.stopAnimating()
-                    self.subview.removeFromSuperview()
-                }
-            } else {
-                print(error)
+                })
             }
-        }
-        task.resume()
-        */
+        })
+    }
+    
+    func loadPaymants(groupIndex:Int?, expenseIndex:Int?){
+        let group = groups[groupIndex!]
+        let expense = group.expenses[expenseIndex!]
+        let paymentRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/expenses/\(expense.expenseId)/payments")
+        paymentRef.observeEventType(.ChildAdded, withBlock: {snapshot in
+            if let cost = snapshot.value[snapshot.key] as? Double {
+                let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(snapshot.key)/fullname")
+                userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    if let name = snapshot.value as? String{
+                        group.expenses[expenseIndex!].payments.append(Payment(userID: snapshot.key,userName: name, cost: cost ))
+                    }
+                })
+            }
+            
+        })
+    }
+}
+
+
+
+extension GroupsViewController {
+    func loadAndDisplayGrubsFromServer(){
+        //TO DO: remove arbitrary load in final version from info.plist
+        
+        loadAndDisplayGroupsNames()
+
     }
 }

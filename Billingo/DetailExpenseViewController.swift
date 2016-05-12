@@ -30,8 +30,8 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         expenseCreateDate.text = dateFormatter.stringFromDate((expense?.expenseCreateDate)!)
-        expenseCreator.text = expense?.expenseCreator
-        expenseCost.text = "Výdej: " + (expense?.cost)!
+        expenseCreator.text = expense?.expenseCreatorName
+        expenseCost.text = "Výdej: " + String((expense?.cost)!)
         self.tableView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
@@ -67,9 +67,10 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ExpenseDetailTableViewCell
-        let user: String = (self.expense?.payments[indexPath.row])!
+        
+        let user :String = (self.expense?.payments[indexPath.row].userName)!
         cell.usrName.text = user
-        let debt = ((Int((expense?.cost)!)! / Int((expense?.payments.count)!)))
+        let debt = ((expense?.cost)! / Double((expense?.payments.count)!))
         //print(debt)
         cell.userDebt.text = "Dlh:" + String(debt)
         return cell
