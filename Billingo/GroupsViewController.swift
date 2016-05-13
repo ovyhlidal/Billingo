@@ -64,6 +64,8 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @IBAction func onAddGroup(sender: AnyObject) {
+        
+        
     }
     
     //there will be just one section
