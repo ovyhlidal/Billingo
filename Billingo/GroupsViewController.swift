@@ -14,6 +14,40 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     @IBOutlet weak var groupCollectionView: UICollectionView!
     @IBOutlet weak var addGroupButton: UIButton!
     
+    @IBAction func showMenu(sender: MenuButton) {
+        let alert = UIAlertController(title: "Billingo", message: "", preferredStyle: .ActionSheet) // 1
+        let firstAction = UIAlertAction(title: "About application", style: .Default) { (alert: UIAlertAction!) -> Void in
+            UIApplication.sharedApplication().openURL(NSURL(string:"https://www.billingo.hu")!)
+        } // 2
+        
+        let secondAction = UIAlertAction(title: "Logout", style: .Default) { (alert: UIAlertAction!) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        } // 3
+        
+        alert.addAction(firstAction) // 4
+        alert.addAction(secondAction) // 5
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        presentViewController(alert, animated: true, completion:nil) // 6
+
+    }
+    /*@IBAction func showMenu(sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Billingo", message: "", preferredStyle: .ActionSheet) // 1
+        let firstAction = UIAlertAction(title: "About application", style: .Default) { (alert: UIAlertAction!) -> Void in
+            UIApplication.sharedApplication().openURL(NSURL(string:"https://www.billingo.hu")!)
+        } // 2
+        
+        let secondAction = UIAlertAction(title: "Logout", style: .Default) { (alert: UIAlertAction!) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        } // 3
+        
+        alert.addAction(firstAction) // 4
+        alert.addAction(secondAction) // 5
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        presentViewController(alert, animated: true, completion:nil) // 6
+    }*/
+
     var groups : Array = [Group]()
     let subview: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let reuseIdentifier = "groupCell"
