@@ -174,7 +174,6 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     func loadAndDisplayGroupMembers(groupIndex:Int?){
         let group = groups[groupIndex!]
-        print(group.id)
         let membersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/members")
         membersRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if let memberID = snapshot.value as? String {
@@ -192,13 +191,12 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadGroupExpenseAndDisplaySum(groupIndex:Int?){
-        print ("here")
         let group = groups[groupIndex!]
         let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/expenses/")
         expensesRef.observeEventType(.ChildAdded, withBlock: {snapshot in
         
             let payments:[Payment] = []
-            
+            let expenseID = snapshot.key
             if let expenseName = snapshot.value["reason"] as? String,
             let expenseCreatorID = snapshot.value["payerUID"] as? String,
             let cost = snapshot.value["totalCost"] as? Double,
@@ -206,7 +204,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(expenseCreatorID)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let expenseCreatorName = snapshot.value as? String{
-                        let expense = Expense(expenseId: snapshot.key, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments  )
+                        let expense = Expense(expenseId: expenseID, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments  )
                         self.groups[groupIndex!].expenses.append(expense)
                         self.loadPaymants(groupIndex, expenseIndex: self.groups[groupIndex!].expenses.indexOf(expense))
                         dispatch_async(dispatch_get_main_queue()) {
@@ -223,7 +221,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         let expense = group.expenses[expenseIndex!]
         let paymentRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/expenses/\(expense.expenseId)/payments")
         paymentRef.observeEventType(.ChildAdded, withBlock: {snapshot in
-            if let cost = snapshot.value[snapshot.key] as? Double {
+            if let cost = snapshot.value as? Double {
                 let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(snapshot.key)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let name = snapshot.value as? String{
