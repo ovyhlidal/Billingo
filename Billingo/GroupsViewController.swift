@@ -232,6 +232,27 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             
         })
     }
+    
+    func saveNewGroup(name:String, membersID:[String]){
+        let groupsRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/)")
+        let jsonGroup = ["name":"\(name)"]
+        let newGroup = groupsRef.childByAutoId()
+        newGroup.setValue(jsonGroup)
+        
+        for memberID in membersID {
+            let addMember = newGroup.childByAutoId()
+            addMember.setValue(memberID)
+        }
+    }
+    
+    func saveNewExpense(groupID:String, payments:[String:String], payerID:String, reason:String, time:NSDate, totalCost:Double){
+        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)/expenses/)")
+        let jsonExpense = ["reason":"\(reason)", "payerUID":"\(payerID)", "createTime":"\(time.timeIntervalSince1970)", "totalCost":"\(totalCost)"]
+        let newExpense = expensesRef.childByAutoId()
+        newExpense.setValue(jsonExpense)
+        newExpense.childByAppendingPath("payments").setValue(payments)
+    }
+    
 }
 
 
