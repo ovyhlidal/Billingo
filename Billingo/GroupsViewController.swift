@@ -13,6 +13,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     @IBOutlet weak var groupCollectionView: UICollectionView!
     @IBOutlet weak var addGroupButton: UIButton!
+    //var currentUser: String? //added
     
     @IBAction func showMenu(sender: MenuButton) {
         let alert = UIAlertController(title: "Billingo", message: "", preferredStyle: .ActionSheet) // 1
@@ -31,23 +32,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         presentViewController(alert, animated: true, completion:nil) // 6
 
     }
-    /*@IBAction func showMenu(sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Billingo", message: "", preferredStyle: .ActionSheet) // 1
-        let firstAction = UIAlertAction(title: "About application", style: .Default) { (alert: UIAlertAction!) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string:"https://www.billingo.hu")!)
-        } // 2
-        
-        let secondAction = UIAlertAction(title: "Logout", style: .Default) { (alert: UIAlertAction!) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        } // 3
-        
-        alert.addAction(firstAction) // 4
-        alert.addAction(secondAction) // 5
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        
-        presentViewController(alert, animated: true, completion:nil) // 6
-    }*/
-
+   
     var groups : Array = [Group]()
     let subview: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let reuseIdentifier = "groupCell"
@@ -80,6 +65,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let nav = segue.destinationViewController as! UINavigationController
                 let controller = nav.topViewController as! DetailGroupViewController
                 controller.expenses = group.expenses
+                controller.groupMembers = group.members
             }
         }
     }
@@ -119,8 +105,8 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         // Configure the cell
         cell.groupName.text = groups[indexPath.item].name
         var memberText = ""
-        for member in groups[indexPath.item].membersNames {
-            memberText += member
+        for member in groups[indexPath.item].members {
+            memberText += member.memberName
             memberText += ", "
         }
         if(memberText.characters.count > 2){
@@ -145,14 +131,13 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         selfUserRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if let groupID = snapshot.value as? String {
                 let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
-                let groupMembersNames:[String] = []
-                let groupMembersIDs:[String] = []
+                let groupMembers: [Member] = []
                 let groupExpenses:[Expense] = []
                 
                 var firstIteration = true
                 groupRef.observeEventType(.Value, withBlock: { snapshot in
                     if let groupName = snapshot.value["name"] as? String{
-                        let group = Group(id: groupID , name: groupName, membersNames: groupMembersNames, membersIDs: groupMembersIDs, expenses: groupExpenses)
+                        let group = Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses)
                         self.groups.append(group)
                         let GroupIndex = self.groups.indexOf(group)
                         self.loadAndDisplayGroupMembers(GroupIndex)
@@ -177,11 +162,10 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         let membersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/members")
         membersRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if let memberID = snapshot.value as? String {
-                group.membersIDs.append(memberID)
                 let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(memberID)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     let name = (snapshot.value as? String)!
-                    group.membersNames.append(name)
+                    group.members.append(Member(memberName: name, memberID: memberID))
                     dispatch_async(dispatch_get_main_queue()) {
                         self.groupCollectionView.reloadData()
                     }
@@ -198,14 +182,14 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             let payments:[Payment] = []
             let expenseID = snapshot.key
             if let expenseName = snapshot.value["reason"] as? String,
-            let expenseCreatorID = snapshot.value["payerUID"] as? String,
+            let expenseCreatorID = snapshot.value["payer"] as? String,
             let cost = snapshot.value["totalCost"] as? Double,
             let expenseCreateDate = snapshot.value["createTime"] as? Double{
                 let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(expenseCreatorID)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let expenseCreatorName = snapshot.value as? String{
-                        let expense = Expense(expenseId: expenseID, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments  )
-                        self.groups[groupIndex!].expenses.append(expense)
+                        let expense = Expense(expenseId: expenseID, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments)
+                            self.groups[groupIndex!].expenses.append(expense)
                         self.loadPaymants(groupIndex, expenseIndex: self.groups[groupIndex!].expenses.indexOf(expense))
                         dispatch_async(dispatch_get_main_queue()) {
                             self.groupCollectionView.reloadData()
@@ -243,14 +227,6 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             let addMember = newGroup.childByAutoId()
             addMember.setValue(memberID)
         }
-    }
-    
-    func saveNewExpense(groupID:String, payments:[String:String], payerID:String, reason:String, time:NSDate, totalCost:Double){
-        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)/expenses/)")
-        let jsonExpense = ["reason":"\(reason)", "payerUID":"\(payerID)", "createTime":"\(time.timeIntervalSince1970)", "totalCost":"\(totalCost)"]
-        let newExpense = expensesRef.childByAutoId()
-        newExpense.setValue(jsonExpense)
-        newExpense.childByAppendingPath("payments").setValue(payments)
     }
     
 }

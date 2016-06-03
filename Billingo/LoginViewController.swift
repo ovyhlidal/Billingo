@@ -184,7 +184,11 @@ class LoginViewController: UIViewController {
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+        /*if segue.identifier == "showGroups" {
+            let nav = segue.destinationViewController as! UINavigationController
+            let controller = nav.topViewController as! GroupsViewController
+            controller.currentUser = firebase.(). self.firebase.getAuth
+        }*/
     }
     
 }

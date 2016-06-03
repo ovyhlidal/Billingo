@@ -14,6 +14,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     let reuseIdentifier = "ExpenseCell"
     let reuseIdentifierForSegue = "showExpenseDetail"
     var expenses: Array = [Expense]()
+    var groupMembers: [Member]?
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func backToGroupsView(sender: AnyObject) {
@@ -43,6 +44,10 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
+    override func viewDidAppear(animated: Bool) {
+        self.tableView.reloadData()
+    }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == reuseIdentifierForSegue {
@@ -52,6 +57,14 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
                 let controller = nav.topViewController as! DetailExpenseViewController
                 controller.expense = expense
             }
+        }
+        if segue.identifier == "addExpenseSegue" {
+            let groupID: String = "-KFjTs8J3Pme2nXYNKLr"
+            let payerID: String = "6f020b3b-8aba-4973-b923-1ffe5b3ae302"
+            let controller = segue.destinationViewController as! AddExpenseViewController
+            controller.groupID = groupID
+            controller.payerID = payerID
+            controller.groupMembers = groupMembers
         }
     }
 

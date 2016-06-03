@@ -11,24 +11,13 @@ import UIKit
 class Group: NSObject {
     var id = "noID"
     var name = "noName"
-    var membersNames:[String] = []
-    var membersIDs:[String] = []
-    var expenses:[Expense] = []
+    var members: [Member]
+    var expenses:[Expense]
     
-    override init() {
-        super.init()
-        id = "Testing ID"
-        name = "name Test"
-        membersNames = ["test Jan", "test Peter", "test Dory"]
-        
-    }
-    
-    init(id:String, name:String, membersNames:[String], membersIDs:[String], expenses: [Expense]) {
-        super.init()
+    init(id:String, name:String, members: [Member], expenses: [Expense]) {
         self.id = id
         self.name = name
-        self.membersNames = membersNames
-        self.membersIDs = membersIDs
+        self.members = members
         self.expenses = expenses
     }
 }
