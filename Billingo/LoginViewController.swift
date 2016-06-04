@@ -15,6 +15,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var keepMeLoggedIn: UISwitch!
     
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let firebase = Firebase(url: "https://glowing-heat-6814.firebaseio.com")
     
@@ -24,6 +26,10 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = "Welcome to Billingo"
+        
+        self.loadingView.hidden = true
+        self.loadingView.alpha = 0
+        self.activityIndicator.stopAnimating()
         
         if self.alredyLoggedIn() {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -64,6 +70,8 @@ class LoginViewController: UIViewController {
             
             self.firebase.createUser(loginTextField.text, password: passwordTextField.text) { (error: NSError!) in
                 
+                
+                self.showLoading()
                 if error == nil {
                     
                     self.firebase.authUser(loginTextField.text, password: passwordTextField.text, withCompletionBlock: { (error, auth) in
@@ -71,8 +79,14 @@ class LoginViewController: UIViewController {
                         {
                             self.saveUser(loginTextField.text!, password:  passwordTextField.text!)
                             self.performSegueWithIdentifier("showGroups", sender: nil)
+                            self.hideLoading()
                         }
                     })
+                }
+                else
+                {
+                    // handle errors!!
+                    
                 }
             }
             
@@ -106,6 +120,8 @@ class LoginViewController: UIViewController {
     
     @IBAction func onLogin(sender: AnyObject) {
         
+        self.showLoading()
+        
         self.authenticateUserWithFirebase(username.text!, password: password.text!)
     }
     
@@ -120,6 +136,7 @@ class LoginViewController: UIViewController {
                                     
                                 } else {
                                     // We are now logged in
+                                    self.hideLoading()
                                     self.saveUser(username, password: password)
                                     self.performSegueWithIdentifier("showGroups", sender: nil)
                                     
@@ -169,6 +186,10 @@ class LoginViewController: UIViewController {
                 print(authData.description)
                 // self.performSegueWithIdentifier("showGroups", sender: nil)
             }
+            else
+            {
+                // problem occured
+            }
         }
     }
     
@@ -189,6 +210,27 @@ class LoginViewController: UIViewController {
             let controller = nav.topViewController as! GroupsViewController
             controller.currentUser = firebase.(). self.firebase.getAuth
         }*/
+    }
+    
+    func showLoading() -> Void {
+        self.loadingView.alpha = 0.0
+        self.loadingView.hidden = false
+        
+        UIView .animateWithDuration(1.0, animations: { 
+            self.loadingView.alpha = 1.0
+            }) { (true) in
+                self.activityIndicator.startAnimating()
+        }
+    }
+    
+    func hideLoading() -> Void {
+        UIView .animateWithDuration(1.0, animations: { 
+            self.loadingView.alpha = 0.0
+            }) { (true) in
+                self.loadingView.hidden = true
+                self.activityIndicator.stopAnimating()
+        }
+        
     }
     
 }
