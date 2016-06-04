@@ -126,35 +126,42 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadAndDisplayGroupsNames(){
-        let MyID = "a031b1f3-4b7a-447b-8174-f6ac25b8a6e5"
-        let selfUserRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(MyID)/groups/")
-        selfUserRef.observeEventType(.ChildAdded, withBlock: { snapshot in
-            if let groupID = snapshot.value as? String {
-                let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
-                let groupMembers: [Member] = []
-                let groupExpenses:[Expense] = []
-                
-                var firstIteration = true
-                groupRef.observeEventType(.Value, withBlock: { snapshot in
-                    if let groupName = snapshot.value["name"] as? String{
-                        let group = Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses)
-                        self.groups.append(group)
-                        let GroupIndex = self.groups.indexOf(group)
-                        self.loadAndDisplayGroupMembers(GroupIndex)
-                        self.loadGroupExpenseAndDisplaySum(GroupIndex)
+        let serverRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/")
+        let MyID = serverRef.authData.uid
+        if(MyID != nil){
+            let selfUserRef = serverRef.childByAppendingPath("users/\(MyID)/groups/")
+            selfUserRef.observeEventType(.Value, withBlock: { snapshot in
+                if(snapshot.value is NSNull){           //if there is no group for this user stop loading
+                    self.subview.stopAnimating()
+                    self.subview.removeFromSuperview()
+                }else{
+                    if let groupID = snapshot.value as? String {
+                        let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
+                        let groupMembers: [Member] = []
+                        let groupExpenses:[Expense] = []
+                    
+                        var firstIteration = true
+                        groupRef.observeEventType(.Value, withBlock: { snapshot in
+                            if let groupName = snapshot.value["name"] as? String{
+                                let group = Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses)
+                                self.groups.append(group)
+                                let GroupIndex = self.groups.indexOf(group)
+                                self.loadAndDisplayGroupMembers(GroupIndex)
+                                self.loadGroupExpenseAndDisplaySum(GroupIndex)
+                            }
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.groupCollectionView.reloadData()
+                                if firstIteration {
+                                    firstIteration = false
+                                    self.subview.stopAnimating()
+                                    self.subview.removeFromSuperview()
+                                }
+                            }
+                        })
                     }
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.groupCollectionView.reloadData()
-                        if firstIteration {
-                            firstIteration = false
-                            self.subview.stopAnimating()
-                            self.subview.removeFromSuperview()
-                        }
-                    }
-                })
-            }
-        })
-        
+                }
+            })
+        }
     }
     
     func loadAndDisplayGroupMembers(groupIndex:Int?){
