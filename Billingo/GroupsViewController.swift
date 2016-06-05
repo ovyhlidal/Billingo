@@ -58,6 +58,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         tracker.set(kGAIScreenName, value: name)
         
         let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
