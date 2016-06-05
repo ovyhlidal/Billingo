@@ -17,6 +17,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     @IBOutlet weak var groupCollectionView: UICollectionView!
     @IBOutlet weak var addGroupButton: UIButton!
+    var myID:String?
     //var currentUser: String? //added
     
     @IBAction func showMenu(sender: MenuButton) {
@@ -117,6 +118,26 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             memberText.removeAtIndex(memberText.endIndex.predecessor().predecessor())   //remove last two letters ", "
         }
         cell.groupMembers.text = memberText
+        var balanceSum = 0.0
+        if let myid = myID as String!{
+            for expense in groups[indexPath.item].expenses {
+                if(expense.expenseCreatorID == myid){
+                    balanceSum += expense.cost
+                }else{
+                    for payment in expense.payments {
+                        if payment.userID == myid {
+                            balanceSum -= payment.cost
+                        }
+                    }
+                }
+            }
+            if balanceSum < 0 {
+                cell.groupInfo.textColor = UIColor.redColor()
+            }else{
+                cell.groupInfo.textColor = UIColor.blackColor()
+            }
+            cell.groupInfo.text = "tvoj stav : \(balanceSum)"
+        }
         return cell
     }
     
@@ -131,9 +152,9 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     func loadAndDisplayGroupsNames(){
         let serverRef = Firebase(url: Constants.baseURL)
-        let MyID = serverRef.authData.uid
-        if(MyID != nil){
-            let selfUserRef = serverRef.childByAppendingPath("users/\(MyID)/groups/")
+        myID = serverRef.authData.uid
+        if(myID != nil){
+            let selfUserRef = serverRef.childByAppendingPath("users/\(myID)/groups/")
             selfUserRef.observeEventType(.Value, withBlock: { snapshot in
                 if(snapshot.value is NSNull){           //if there is no group for this user stop loading
                     self.subview.stopAnimating()
