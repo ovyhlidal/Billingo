@@ -65,8 +65,9 @@ class LoginViewController: UIViewController {
         let alertController = UIAlertController(title: "Create account", message: "You can create new account", preferredStyle: .Alert)
         
         let loginAction = UIAlertAction(title: "Create", style: .Default) { (_) in
-            let loginTextField = alertController.textFields![0] as UITextField
-            let passwordTextField = alertController.textFields![1] as UITextField
+            let nameTextField = alertController.textFields![0] as UITextField
+            let loginTextField = alertController.textFields![1] as UITextField
+            let passwordTextField = alertController.textFields![2] as UITextField
             
             self.firebase.createUser(loginTextField.text, password: passwordTextField.text) { (error: NSError!) in
                 
@@ -82,6 +83,7 @@ class LoginViewController: UIViewController {
                             self.hideLoading()
                         }
                     })
+                    self.saveNewUser(nameTextField.text!, email: loginTextField.text!)
                 }
                 else
                 {
@@ -106,6 +108,11 @@ class LoginViewController: UIViewController {
         
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (_) in }
+        
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.placeholder = "Name"
+        }
         
         alertController.addTextFieldWithConfigurationHandler { (textField) in
             textField.placeholder = "Email"
@@ -255,6 +262,14 @@ class LoginViewController: UIViewController {
             let controller = nav.topViewController as! GroupsViewController
             controller.currentUser = firebase.(). self.firebase.getAuth
         }*/
+    }
+    
+    func saveNewUser(name:String, email:String){
+        let usersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
+        let myID = usersRef.authData.uid
+        let jsonUser = ["name":"\(name)", "email":"\(email)"]
+        let newUser = usersRef.childByAppendingPath("\(myID)")
+        newUser.setValue(jsonUser)
     }
     
     func showLoading() -> Void {
