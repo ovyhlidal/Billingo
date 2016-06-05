@@ -154,8 +154,14 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         let serverRef = Firebase(url: Constants.baseURL)
         myID = serverRef.authData.uid
         if(myID != nil){
-            let selfUserRef = serverRef.childByAppendingPath("users/\(myID)/groups/")
-            selfUserRef.observeEventType(.Value, withBlock: { snapshot in
+            let selfUserRef = serverRef.childByAppendingPath("users/\(myID!)/groups/")
+            selfUserRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if snapshot.value is NSNull {
+                    self.subview.stopAnimating()
+                    self.subview.removeFromSuperview()
+                }
+            })
+            selfUserRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if(snapshot.value is NSNull){           //if there is no group for this user stop loading
                     self.subview.stopAnimating()
                     self.subview.removeFromSuperview()
