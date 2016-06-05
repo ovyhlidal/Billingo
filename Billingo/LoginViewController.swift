@@ -85,6 +85,17 @@ class LoginViewController: UIViewController {
                 }
                 else
                 {
+                    let alertControllerSimple = UIAlertController(title: "Error", message: "There is a problem with connection", preferredStyle: .Alert)
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                        // ...
+                    }
+                    alertControllerSimple.addAction(OKAction)
+                    
+                    self.presentViewController(alertControllerSimple, animated: true) {
+                        // ...
+                    }
                     // handle errors!!
                     
                 }
@@ -132,7 +143,23 @@ class LoginViewController: UIViewController {
                                 if error != nil {
                                     // There was an error logging in to this account
                                     // handle this error better
-                                    self.onCreateAccount(self)
+                                    print(error)
+                                    
+                                    if let errorCode = FAuthenticationError(rawValue: error.code) {
+                                        switch (errorCode) {
+                                        case .UserDoesNotExist:
+                                            self.onCreateAccount(self)
+                                        case .InvalidEmail:
+                                            print("Handle invalid email")
+                                            self .showError("Invalid email")
+                                        case .InvalidPassword:
+                                            print("Handle invalid password")
+                                            self .showError("Invalid pasword")
+                                        default:
+                                            print("Handle default situation")
+                                        }
+                                    }
+                                   
                                     
                                 } else {
                                     // We are now logged in
@@ -141,6 +168,24 @@ class LoginViewController: UIViewController {
                                     self.performSegueWithIdentifier("showGroups", sender: nil)
                                     
                                 }        })
+
+    }
+    
+    
+    func showError(errorMessage :String) -> Void {
+        let alertControllerSimple = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .Alert)
+        
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            self .hideLoading()
+        }
+        
+        alertControllerSimple.addAction(OKAction)
+        
+        self.presentViewController(alertControllerSimple, animated: true) {
+            // ...
+        }
+        // handle errors!!
 
     }
     
