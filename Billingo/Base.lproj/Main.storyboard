@@ -211,10 +211,10 @@
             </objects>
             <point key="canvasLocation" x="2116" y="437"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Group View Controller-->
         <scene sceneID="Uv5-JK-aX9">
             <objects>
-                <viewController id="bHg-gg-m1Z" sceneMemberID="viewController">
+                <viewController id="bHg-gg-m1Z" customClass="AddGroupViewController" customModule="Billingo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="t3f-zn-dPa"/>
                         <viewControllerLayoutGuide type="bottom" id="kcX-Jh-ueO"/>
