@@ -14,8 +14,4 @@ class ExpenseTableViewCell: UITableViewCell {
     @IBOutlet weak var expenseCost: UILabel!
     @IBOutlet weak var numberOfExpenseMembers: UILabel!
     
-    //@IBOutlet weak var expenseName: UILabel!
-    //@IBOutlet weak var expenseCost: UILabel!
-    //@IBOutlet weak var numberOfExpenseMembers: UILabel!
-    
-}
+  }
