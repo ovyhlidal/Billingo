@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+struct Constants {
+    static let baseURL = "https://glowing-heat-6814.firebaseio.com/"
+}
+
 class GroupsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var groupCollectionView: UICollectionView!
@@ -54,8 +58,6 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         tracker.set(kGAIScreenName, value: name)
         
         let builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
-        getNameFromEmail("adfsd@seznam.cz")
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -118,7 +120,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func getUserNameFromUserID(userID: String) -> String{
-        let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
+        let userRef = Firebase(url: Constants.baseURL + "users/")
         var name = ""
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             name = (snapshot.value.objectForKey("\(userID)/fullname") as? String)!
@@ -127,7 +129,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadAndDisplayGroupsNames(){
-        let serverRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/")
+        let serverRef = Firebase(url: Constants.baseURL)
         let MyID = serverRef.authData.uid
         if(MyID != nil){
             let selfUserRef = serverRef.childByAppendingPath("users/\(MyID)/groups/")
@@ -137,7 +139,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                     self.subview.removeFromSuperview()
                 }else{
                     if let groupID = snapshot.value as? String {
-                        let groupRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)")
+                        let groupRef = Firebase(url:  Constants.baseURL + "groups/\(groupID)")
                         let groupMembers: [Member] = []
                         let groupExpenses:[Expense] = []
                     
@@ -167,10 +169,10 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     func loadAndDisplayGroupMembers(groupIndex:Int?){
         let group = groups[groupIndex!]
-        let membersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/members")
+        let membersRef = Firebase(url:  Constants.baseURL + "groups/\(group.id)/members")
         membersRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if let memberID = snapshot.value as? String {
-                let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(memberID)/fullname")
+                let userRef = Firebase(url:  Constants.baseURL + "users/\(memberID)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     let name = (snapshot.value as? String)!
                     group.members.append(Member(memberName: name, memberID: memberID))
@@ -184,7 +186,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     func loadGroupExpenseAndDisplaySum(groupIndex:Int?){
         let group = groups[groupIndex!]
-        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/expenses/")
+        let expensesRef = Firebase(url:  Constants.baseURL + "groups/\(group.id)/expenses/")
         expensesRef.observeEventType(.ChildAdded, withBlock: {snapshot in
         
             let payments:[Payment] = []
@@ -193,7 +195,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             let expenseCreatorID = snapshot.value["payer"] as? String,
             let cost = snapshot.value["totalCost"] as? Double,
             let expenseCreateDate = snapshot.value["createTime"] as? Double{
-                let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(expenseCreatorID)/fullname")
+                let userRef = Firebase(url:  Constants.baseURL + "users/\(expenseCreatorID)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let expenseCreatorName = snapshot.value as? String{
                         let expense = Expense(expenseId: expenseID, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments)
@@ -211,10 +213,10 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     func loadPaymants(groupIndex:Int?, expenseIndex:Int?){
         let group = groups[groupIndex!]
         let expense = group.expenses[expenseIndex!]
-        let paymentRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(group.id)/expenses/\(expense.expenseId)/payments")
+        let paymentRef = Firebase(url:  Constants.baseURL + "groups/\(group.id)/expenses/\(expense.expenseId)/payments")
         paymentRef.observeEventType(.ChildAdded, withBlock: {snapshot in
             if let cost = snapshot.value as? Double {
-                let userRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/\(snapshot.key)/fullname")
+                let userRef = Firebase(url:  Constants.baseURL + "users/\(snapshot.key)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let name = snapshot.value as? String{
                         group.expenses[expenseIndex!].payments.append(Payment(userID: snapshot.key,userName: name, cost: cost ))
@@ -226,7 +228,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func saveNewGroup(name:String, membersID:[String]){
-        let groupsRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/")
+        let groupsRef = Firebase(url:  Constants.baseURL + "groups/)")
         let jsonGroup = ["name":"\(name)"]
         let newGroup = groupsRef.childByAutoId()
         newGroup.setValue(jsonGroup)
