@@ -55,6 +55,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        getNameFromEmail("adfsd@seznam.cz")
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -225,7 +226,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func saveNewGroup(name:String, membersID:[String]){
-        let groupsRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/)")
+        let groupsRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/")
         let jsonGroup = ["name":"\(name)"]
         let newGroup = groupsRef.childByAutoId()
         newGroup.setValue(jsonGroup)
@@ -236,6 +237,14 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
+    func getNameFromEmail(email:String, textField:UITextField){
+        let usersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
+        usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
+            if let name = snapshot.value["fullname"] as? String{
+                textField.text = name
+            }
+        })
+    }
 }
 
 
