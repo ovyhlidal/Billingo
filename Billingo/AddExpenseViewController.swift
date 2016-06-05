@@ -88,13 +88,15 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupMembers!.count
+        return groupMembers!.count - 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("AddExpenseCell", forIndexPath: indexPath) as! AddExpenseTableViewCell
         let member = groupMembers![indexPath.row]
-        cell.name.text = member.memberName
+        if !(member.memberID == payerID!) {
+            cell.name.text = member.memberName
+        }
         return cell
     }
 

@@ -17,7 +17,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     @IBOutlet weak var groupCollectionView: UICollectionView!
     @IBOutlet weak var addGroupButton: UIButton!
-    var myID:String?
+    var myID: String?
     //var currentUser: String? //added
     
     @IBAction func showMenu(sender: MenuButton) {
@@ -71,6 +71,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let controller = nav.topViewController as! DetailGroupViewController
                 controller.expenses = group.expenses
                 controller.groupMembers = group.members
+                controller.myID = self.myID!
             }
         }
     }

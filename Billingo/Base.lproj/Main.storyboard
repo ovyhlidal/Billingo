@@ -354,7 +354,7 @@
                                 <rect key="frame" x="20" y="72" width="560" height="508"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="91" id="eN6-PB-4kJ" customClass="ExpenseTableViewCell" customModule="Billingo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExpenseCell" rowHeight="91" id="eN6-PB-4kJ" customClass="ExpenseTableViewCell" customModule="Billingo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="560" height="91"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eN6-PB-4kJ" id="yvd-fB-kJl">
@@ -407,6 +407,7 @@
                                             <outlet property="expenseCost" destination="T7O-D7-mcx" id="PMt-bQ-zgT"/>
                                             <outlet property="expenseName" destination="ms2-xR-nSA" id="kaO-HG-gaw"/>
                                             <outlet property="numberOfExpenseMembers" destination="zat-ZD-33k" id="9ol-LZ-Gkn"/>
+                                            <segue destination="fXd-IZ-oO8" kind="showDetail" identifier="showExpenseDetail" id="DXH-lm-nMy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -464,7 +465,7 @@
                                     <constraint firstAttribute="height" constant="436" id="ulz-mm-JTA"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="49" id="mbU-7u-ZPX" customClass="ExpenseDetailTableViewCell" customModule="Billingo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExpenseDetailCell" rowHeight="49" id="mbU-7u-ZPX" customClass="ExpenseDetailTableViewCell" customModule="Billingo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="560" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbU-7u-ZPX" id="0DK-57-zme">
@@ -519,7 +520,7 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJE-4a-JA6">
                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="40"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
