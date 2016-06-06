@@ -124,7 +124,11 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         if let myid = myID as String!{
             for expense in groups[indexPath.item].expenses {
                 if(expense.expenseCreatorID == myid){
-                    balanceSum += expense.cost
+                    for payment in expense.payments {
+                        if payment.userID != myid {
+                            balanceSum += payment.cost
+                        }
+                    }
                 }else{
                     for payment in expense.payments {
                         if payment.userID == myid {
@@ -245,11 +249,15 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         let expense = group.expenses[expenseIndex!]
         let paymentRef = Firebase(url:  Constants.baseURL + "groups/\(group.id)/expenses/\(expense.expenseId)/payments")
         paymentRef.observeEventType(.ChildAdded, withBlock: {snapshot in
-            if let cost = snapshot.value as? Double {
+            if let cost = snapshot.value as? Double{
+                let userID = snapshot.key
                 let userRef = Firebase(url:  Constants.baseURL + "users/\(snapshot.key)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let name = snapshot.value as? String{
-                        group.expenses[expenseIndex!].payments.append(Payment(userID: snapshot.key,userName: name, cost: cost ))
+                        group.expenses[expenseIndex!].payments.append(Payment(userID: userID,userName: name, cost: cost ))
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.groupCollectionView.reloadData()
+                        }
                     }
                 })
             }
