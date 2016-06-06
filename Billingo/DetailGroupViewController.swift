@@ -16,6 +16,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     var expenses: Array = [Expense]()
     var groupMembers: [Member]?
     var myID: String?
+    var groupID: String?
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func backToGroupsView(sender: AnyObject) {
@@ -60,7 +61,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
         if segue.identifier == "addExpenseSegue" {
-            let groupID: String = "-KFjTs8J3Pme2nXYNKLr"
+            let groupID: String = self.groupID!
             let payerID: String = self.myID!
             let controller = segue.destinationViewController as! AddExpenseViewController
             controller.groupID = groupID
