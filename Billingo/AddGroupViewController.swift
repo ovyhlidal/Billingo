@@ -8,8 +8,13 @@
 
 import UIKit
 
-class AddGroupViewController: UIViewController {
+class AddGroupViewController: UIViewController, UITextViewDelegate {
 
+    @IBOutlet weak var addMemberTextField: UITextField!
+    @IBOutlet weak var membersTableView: UITableView!
+    var members = []
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,6 +27,26 @@ class AddGroupViewController: UIViewController {
     }
     
 
+    @IBAction func onAdd(sender: AnyObject) {
+        
+        if (!addMemberTextField.text!.isEmpty) {
+            // Create a NSCharacterSet of delimiters.
+            let separators = NSCharacterSet(charactersInString: ":,; ")
+            // Split based on characters.
+            let parts = addMemberTextField.text!.componentsSeparatedByCharactersInSet(separators)
+            
+            for email in parts{
+                
+                print(email)
+                
+                if self .isValidEmail(email) {
+                    print("valid email")
+                }
+            }
+
+        }
+        
+    }
     /*
     // MARK: - Navigation
 
@@ -31,5 +56,19 @@ class AddGroupViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func textFieldDidBeginEditing(textField: UITextField)
+    {
+        
+    }
+    
+    
+    func isValidEmail(testStr:String) -> Bool {
+        // println("validate calendar: \(testStr)")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluateWithObject(testStr)
+    }
 
 }
