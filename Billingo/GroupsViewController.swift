@@ -27,6 +27,10 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         } // 2
         
         let secondAction = UIAlertAction(title: "Logout", style: .Default) { (alert: UIAlertAction!) -> Void in
+            let serverRef = Firebase(url: Constants.baseURL)
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("username")
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("password")
+            serverRef.unauth()
             self.dismissViewControllerAnimated(true, completion: nil)
         } // 3
         
