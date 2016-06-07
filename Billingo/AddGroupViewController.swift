@@ -37,6 +37,9 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         if (!addMemberTextField.text!.isEmpty) {
             // Create a NSCharacterSet of delimiters.
             
+            var originalText = addMemberTextField.text!
+            
+            
             let separators = NSCharacterSet(charactersInString: ":,; ")
             // Split based on characters.
             let parts = addMemberTextField.text!.componentsSeparatedByCharactersInSet(separators)
@@ -49,10 +52,14 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
                     
                     let usersRef = Firebase(url: Constants.baseURL +  "users/")
                     usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
+                        
+                        
                         if let name = snapshot.value["fullname"] as? String{
                             self.groupMembers.append(name)
                             self.validMembers.addObject(Member(memberName: name, memberID: email))
                             self.membersTableView.reloadData()
+                            
+                            self.addMemberTextField.text = "" // originalText.stringByReplacingOccurrencesOfString(email, withString: "")
                         }
                     })
 
@@ -128,7 +135,7 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell") as? MemberTableViewCell!
         
         let member = validMembers[indexPath.row] as! Member
-        cell!.memberNameLabel.text = member.memberName
+        cell!.memberNameLabel.text = member.memberName + "-" + member.memberID
         
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
         return cell!
