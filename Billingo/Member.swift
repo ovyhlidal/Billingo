@@ -16,4 +16,9 @@ class Member: NSObject{
         self.memberName = memberName
         self.memberID = memberID
     }
+    
+    override init() {
+        self.memberName = ""
+        self.memberID = ""
+    }
 }

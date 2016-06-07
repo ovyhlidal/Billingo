@@ -7,30 +7,36 @@
 //
 
 import UIKit
+import Firebase
 
-class AddGroupViewController: UIViewController, UITextViewDelegate {
-
+class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
+    
     @IBOutlet weak var addMemberTextField: UITextField!
     @IBOutlet weak var membersTableView: UITableView!
-    var members = []
+    let firebase = Firebase(url: Constants.baseURL + "users/")
+    var members:NSMutableArray = []
+    var validMembers:NSMutableArray = []
+    var groupMembers = [String]()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        members = NSMutableArray()
         // Do any additional setup after loading the view.
+       
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     @IBAction func onAdd(sender: AnyObject) {
         
         if (!addMemberTextField.text!.isEmpty) {
             // Create a NSCharacterSet of delimiters.
+            
             let separators = NSCharacterSet(charactersInString: ":,; ")
             // Split based on characters.
             let parts = addMemberTextField.text!.componentsSeparatedByCharactersInSet(separators)
@@ -40,22 +46,62 @@ class AddGroupViewController: UIViewController, UITextViewDelegate {
                 print(email)
                 
                 if self .isValidEmail(email) {
-                    print("valid email")
+                    
+                    let usersRef = Firebase(url: Constants.baseURL +  "users/")
+                    usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
+                        if let name = snapshot.value["fullname"] as? String{
+                            self.groupMembers.append(name)
+                            self.validMembers.addObject(Member(memberName: name, memberID: email))
+                            self.membersTableView.reloadData()
+                        }
+                    })
+
+                   
+            
                 }
             }
-
+            
+           
+            
         }
         
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+//    usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
+//    if let name = snapshot.value["fullname"] as? String{
+//    textField.text = name
+//    }
+//    })
+//}
+//    func getAllUsers() -> Void {
+//        let userRef = Firebase(url: Constants.baseURL + "users/")
+//        
+//        userRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+//
+//            var member = Member()
+//            if let name = snapshot.value["fullname"] as? String {
+//                member.memberName = name
+//            }
+//            
+//            if let email = snapshot.value["email"] as? String{
+//               member.memberID = email
+//            }
+//            
+//            self.members.addObject(member)
+//            print(self.members)
+//        })
+//        
+//    
+//    }
     
     func textFieldDidBeginEditing(textField: UITextField)
     {
@@ -70,5 +116,22 @@ class AddGroupViewController: UIViewController, UITextViewDelegate {
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluateWithObject(testStr)
     }
-
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return validMembers.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell") as? MemberTableViewCell!
+        
+        let member = validMembers[indexPath.row] as! Member
+        cell!.memberNameLabel.text = member.memberName
+        
+        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        return cell!
+    }
+    
 }

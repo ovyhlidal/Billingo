@@ -25,6 +25,7 @@
 		2D39B2011CD0924E00E8803C /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D39B2001CD0924E00E8803C /* Group.swift */; };
 		2D39B2031CD092F500E8803C /* GroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D39B2021CD092F500E8803C /* GroupCollectionViewCell.swift */; };
 		2D39B2071CD0960F00E8803C /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D39B2061CD0960F00E8803C /* KeychainWrapper.m */; };
+		2D44860A1D06136F00D66A9F /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4486091D06136F00D66A9F /* MemberTableViewCell.swift */; };
 		2D452E961D04651D0012B2C6 /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D452E951D04651D0012B2C6 /* AddGroupViewController.swift */; };
 		2DBA65D21CB66C78004B61BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA65D11CB66C78004B61BD /* LoginViewController.swift */; };
 		CAF560E6C6E97CB059E9CCFF /* Pods_Billingo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A1E5C67513B2F59FE5BF13A /* Pods_Billingo.framework */; };
@@ -54,6 +55,7 @@
 		2D39B2041CD0960E00E8803C /* Billingo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Billingo-Bridging-Header.h"; sourceTree = "<group>"; };
 		2D39B2051CD0960F00E8803C /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		2D39B2061CD0960F00E8803C /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
+		2D4486091D06136F00D66A9F /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
 		2D452E951D04651D0012B2C6 /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
 		2DBA65D11CB66C78004B61BD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7A1E5C67513B2F59FE5BF13A /* Pods_Billingo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Billingo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +94,7 @@
 				2D39B2021CD092F500E8803C /* GroupCollectionViewCell.swift */,
 				1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */,
 				1D24713F1CFF795200DA4FB3 /* AddExpenseTableViewCell.swift */,
+				2D4486091D06136F00D66A9F /* MemberTableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				2D39B2071CD0960F00E8803C /* KeychainWrapper.m in Sources */,
 				1D5DEBDB1CD2104500798520 /* Expense.swift in Sources */,
 				2D39B2031CD092F500E8803C /* GroupCollectionViewCell.swift in Sources */,
+				2D44860A1D06136F00D66A9F /* MemberTableViewCell.swift in Sources */,
 				1D09DF451CD6CF18008D415F /* ExpenseDetailTableViewCell.swift in Sources */,
 				1D580CD11CE88D68009DF841 /* MenuButton.swift in Sources */,
 				2D39B2011CD0924E00E8803C /* Group.swift in Sources */,
