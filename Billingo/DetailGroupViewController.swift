@@ -40,6 +40,8 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.tableView.reloadData()
+
         let name = "Pattern~\("DetailGroupViewController")"
         
         let tracker = GAI.sharedInstance().defaultTracker

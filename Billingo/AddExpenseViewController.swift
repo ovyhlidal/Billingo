@@ -72,8 +72,10 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
         var index: Int = 0
         payments[payerID!] = totalCost/(Double.init(count + 1))
         for cell in list {
-            if cell.name.text == groupMembers![index].memberName {
-                payments[groupMembers![index].memberID] = totalCost/(Double.init(count + 1))
+            if cell.isTrue {
+                if cell.name.text == groupMembers![index].memberName {
+                    payments[groupMembers![index].memberID] = totalCost/(Double.init(count + 1))
+                }
             }
             index += 1
         }
