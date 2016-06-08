@@ -220,8 +220,6 @@ class LoginViewController: UIViewController {
             }
         }
         
-    
-        
         return false
     }
     
@@ -266,6 +264,7 @@ class LoginViewController: UIViewController {
         let jsonUser = ["fullname":"\(name)", "email":"\(email)"]
         let newUser = usersRef.childByAppendingPath("\(myID)")
         newUser.setValue(jsonUser)
+        
     }
     
     func showLoading() -> Void {

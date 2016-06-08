@@ -340,6 +340,9 @@
                                 <rect key="frame" x="242" y="495" width="116" height="34"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <state key="normal" title="Create Group"/>
+                                <connections>
+                                    <action selector="onCreateGroup:" destination="bHg-gg-m1Z" eventType="touchUpInside" id="emB-a5-AC1"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

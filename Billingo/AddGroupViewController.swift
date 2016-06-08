@@ -19,12 +19,14 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
     var validMembers:NSMutableArray = []
     var groupMembers = [String]()
     
+    var myID = ""
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         members = NSMutableArray()
         // Do any additional setup after loading the view.
-       
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,6 +34,32 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onCreateGroup(sender: AnyObject) {
+        
+        if self.groupNameTextField.text!.characters.count > 0 {
+            if self.validMembers.count > 0 {
+                
+                // get array of refs for users
+                let usersRef = Firebase(url: Constants.baseURL +  "users/")
+                let myEmail = NSUserDefaults.standardUserDefaults().stringForKey("username") as String!
+                usersRef.queryOrderedByChild("email").queryEqualToValue(myEmail).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
+                    
+                    self.groupMembers.append(snapshot.key)
+                    self.saveNewGroup(self.groupNameTextField.text!, membersID: self.groupMembers)
+                })
+                
+            }
+            else
+            {
+                // alert Add some members!
+            }
+            
+        }
+        else
+        {
+            // alert Fill Name of Group!
+        }
+    }
     
     @IBAction func onAdd(sender: AnyObject) {
         
@@ -46,28 +74,22 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
             let parts = addMemberTextField.text!.componentsSeparatedByCharactersInSet(separators)
             
             for email in parts{
-                
-                
-                
                 if self .isValidEmail(email) {
                     
                     let usersRef = Firebase(url: Constants.baseURL +  "users/")
                     usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
-                        print("snapshot block")
+                        print("snapshot", snapshot.description)
                         
                         if let name = snapshot.value["fullname"] as? String{
-                            self.groupMembers.append(name)
-                            self.validMembers.addObject(Member(memberName: name, memberID: email))
+                            self.groupMembers.append(snapshot.key)
+                            self.validMembers.addObject(Member(memberName: name, memberID: snapshot.key, memberEmail: email))
+                            
                             self.membersTableView.reloadData()
                             
                             self.addMemberTextField.text = "" // originalText.stringByReplacingOccurrencesOfString(email, withString: "")
                         }
-                        else
-                        {
-                            print("snapshot ale jinej protoze neni full name")
-                        }
                         
-                        
+                        print("snapshot ale jinej protoze neni full name")
                         }, withCancelBlock: { error in
                             print("Tady je chyba!")
                             print(error.description)
@@ -75,61 +97,36 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
                 }
             }
             
-           
+            
             
         }
         
     }
     
     func saveNewExpense(groupID:String, payments:[String:Double], payerID:String, reason:String, time:NSDate, totalCost:Double){
-        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)/expenses/")
+        let expensesRef = Firebase(url: Constants.baseURL + "groups/\(groupID)/expenses/")
         let jsonExpense = ["reason":"\(reason)", "payer":"\(payerID)", "createTime":(Int.init(time.timeIntervalSince1970)), "totalCost":(totalCost)]
         let newExpense = expensesRef.childByAutoId()
         newExpense.setValue(jsonExpense)
         newExpense.childByAppendingPath("payments").setValue(payments)
     }
     
-    
-    func createGroup() ->Void
-    {
-        let groupsRef = Firebase(url: Constants.baseURL + "groups/")
+    func saveNewGroup(name:String, membersID:[String]){
+        let groupsRef = Firebase(url:  Constants.baseURL + "groups/")
+        let jsonGroup = ["name":"\(name)"]
+        let newGroup = groupsRef.childByAutoId()
+        newGroup.setValue(jsonGroup)
+        
+        let groupMembers = newGroup.childByAppendingPath("members")
+        
+        for memberID in membersID {
+            let addMember = groupMembers.childByAutoId()
+            addMember.setValue(memberID)
+        }
+        
+        self.navigationController?.popViewControllerAnimated(true)
     }
-
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-//    usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
-//    if let name = snapshot.value["fullname"] as? String{
-//    textField.text = name
-//    }
-//    })
-//}
-//    func getAllUsers() -> Void {
-//        let userRef = Firebase(url: Constants.baseURL + "users/")
-//        
-//        userRef.observeEventType(.ChildAdded, withBlock: { snapshot in
-//
-//            var member = Member()
-//            if let name = snapshot.value["fullname"] as? String {
-//                member.memberName = name
-//            }
-//            
-//            if let email = snapshot.value["email"] as? String{
-//               member.memberID = email
-//            }
-//            
-//            self.members.addObject(member)
-//            print(self.members)
-//        })
-//        
-//    
-//    }
+    
     
     func textFieldDidBeginEditing(textField: UITextField)
     {
@@ -156,7 +153,7 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell") as? MemberTableViewCell!
         
         let member = validMembers[indexPath.row] as! Member
-        cell!.memberNameLabel.text = member.memberName + "-" + member.memberID
+        cell!.memberNameLabel.text = member.memberName + "-" + member.memberEmail
         
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
         return cell!

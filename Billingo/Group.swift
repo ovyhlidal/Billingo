@@ -20,4 +20,11 @@ class Group: NSObject {
         self.members = members
         self.expenses = expenses
     }
+    
+    init(name:String, members: [Member]) {
+        self.name = name
+        self.members = members
+        self.expenses = [Expense]()
+    }
+
 }
