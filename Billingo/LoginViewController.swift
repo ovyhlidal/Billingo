@@ -155,7 +155,9 @@ class LoginViewController: UIViewController {
                                     if let errorCode = FAuthenticationError(rawValue: error.code) {
                                         switch (errorCode) {
                                         case .UserDoesNotExist:
-                                            self.onCreateAccount(self)
+                                            //self.onCreateAccount(self)
+                                            self .showError("User not recognized")
+                                            
                                         case .InvalidEmail:
                                             print("Handle invalid email")
                                             self .showError("Invalid email")
@@ -273,7 +275,7 @@ class LoginViewController: UIViewController {
         self.loadingView.alpha = 0.0
         self.loadingView.hidden = false
         
-        UIView .animateWithDuration(1.0, animations: { 
+        UIView .animateWithDuration(0.5, animations: {
             self.loadingView.alpha = 1.0
             }) { (true) in
                 self.activityIndicator.startAnimating()
@@ -281,7 +283,7 @@ class LoginViewController: UIViewController {
     }
     
     func hideLoading() -> Void {
-        UIView .animateWithDuration(1.0, animations: { 
+        UIView .animateWithDuration(0.5, animations: {
             self.loadingView.alpha = 0.0
             }) { (true) in
                 self.loadingView.hidden = true
