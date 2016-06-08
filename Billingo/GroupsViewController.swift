@@ -182,9 +182,9 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                         let groupRef = Firebase(url:  Constants.baseURL + "groups/\(groupID)")
                         let groupMembers: [Member] = []
                         let groupExpenses:[Expense] = []
-                    
+                        
                         var firstIteration = true
-                        groupRef.observeEventType(.Value, withBlock: { snapshot in
+                        groupRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                             if let groupName = snapshot.value["name"] as? String{
                                 let group = Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses)
                                 self.groups.append(group)
