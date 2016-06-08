@@ -8,7 +8,7 @@
 
 import Foundation
 
-class StatisticGroupViewCell: UITableViewCell {
+class StatisticGroupTableViewCell: UITableViewCell {
     //musi za zmenit len docasne !!!!!!!!!!!!!!!!!!!!
     @IBOutlet weak var memberName: UILabel!
     @IBOutlet weak var memberCreatedPayments: UILabel!

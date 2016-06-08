@@ -76,6 +76,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 controller.expenses = group.expenses
                 controller.groupMembers = group.members
                 controller.groupID = group.id
+                controller.group = group
                 controller.myID = self.myID!
             }
         }
