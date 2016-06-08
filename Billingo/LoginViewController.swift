@@ -229,6 +229,19 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        print("DID appear")
+        
+        UIView.animateWithDuration(0.0, animations: {
+            self.username.center.x -= self.view.bounds.width
+            self.password.center.x -= self.view.bounds.width
+            
+        })
+        
+        UIView.animateWithDuration(0.5, animations: {
+            self.username.center.x += self.view.bounds.width
+             self.password.center.x += self.view.bounds.width
+        })
+
         
         // 1
         self.firebase.observeAuthEventWithBlock { (authData) -> Void in
@@ -255,6 +268,14 @@ class LoginViewController: UIViewController {
         
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        // animations
+        print("will appear")
+       
+        
+        
+        
+        
     }
     
     
