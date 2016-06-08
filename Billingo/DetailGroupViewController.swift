@@ -12,11 +12,14 @@ import UIKit
 class DetailGroupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let reuseIdentifier = "ExpenseCell"
-    let reuseIdentifierForSegue = "showExpenseDetail"
+    let reuseIdentifierForAddExpenseSegue = "addExpenseSegue"
+    let reuseIdentifierForExpenseDetailSegue = "showExpenseDetail"
+    let reuseIdentifierForGroupStatisticsSegue = "showStatistics"
     var expenses: Array = [Expense]()
     var groupMembers: [Member]?
     var myID: String?
     var groupID: String?
+    var group: Group?
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func backToGroupsView(sender: AnyObject) {
@@ -52,7 +55,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == reuseIdentifierForSegue {
+        if segue.identifier == reuseIdentifierForExpenseDetailSegue {
             if let indexPath = self.tableView.indexPathForCell(sender as! ExpenseTableViewCell) {
                 let expense = expenses[indexPath.row]
                 let nav = segue.destinationViewController as! UINavigationController
@@ -60,13 +63,18 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
                 controller.expense = expense
             }
         }
-        if segue.identifier == "addExpenseSegue" {
+        if segue.identifier == reuseIdentifierForAddExpenseSegue {
             let groupID: String = self.groupID!
             let payerID: String = self.myID!
             let controller = segue.destinationViewController as! AddExpenseViewController
             controller.groupID = groupID
             controller.payerID = payerID
             controller.groupMembers = groupMembers
+        }
+        if segue.identifier == reuseIdentifierForGroupStatisticsSegue {
+            let group: Group = self.group!
+            let controller = segue.destinationViewController as! StatisticGroupViewController
+            controller.group = group
         }
     }
 
@@ -87,7 +95,8 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ExpenseTableViewCell
         let expense = expenses[indexPath.row]
         cell.expenseName.text = expense.expenseName
-        cell.expenseCost.text = "Cost: " + String(expense.cost)
+        let costAdapted = String(format: "%.2f", expense.cost)
+        cell.expenseCost.text = "Cost: " + String(costAdapted)
         cell.numberOfExpenseMembers.text = String(expense.payments.count)
         return cell
     }

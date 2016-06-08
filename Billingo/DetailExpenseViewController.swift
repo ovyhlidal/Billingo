@@ -25,6 +25,15 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var indexOfMyId: Int = 0
+        for index in 0 ..< expense!.payments.count {
+            if expense!.payments[index].userID == expense?.expenseCreatorID {
+                indexOfMyId = index
+                break
+            }
+        }
+        expense?.payments.removeAtIndex(indexOfMyId)
+        
         expenseName.text = expense?.expenseName
         print(String(expense?.expenseCreateDate))
         let dateFormatter = NSDateFormatter()
@@ -72,7 +81,8 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         cell.usrName.text = user
         let debt = ((expense?.cost)! / Double((expense?.payments.count)!))
         //print(debt)
-        cell.userDebt.text = "Dlh:" + String(debt)
+        let debtAdapted = String(format: "%.2f", debt)
+        cell.userDebt.text = "Dlh:" + debtAdapted
         return cell
     }
 

@@ -20,6 +20,15 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        var indexOfMyId: Int = 0
+        for index in 0 ..< groupMembers!.count {
+            if groupMembers![index].memberID == payerID {
+                indexOfMyId = index
+                break
+            }
+        }
+        groupMembers?.removeAtIndex(indexOfMyId)
+        
         tableView.delegate = self
         tableView.dataSource = self
 
@@ -89,15 +98,16 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupMembers!.count - 1
+        return groupMembers!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("AddExpenseCell", forIndexPath: indexPath) as! AddExpenseTableViewCell
         let member = groupMembers![indexPath.row]
-        if !(member.memberID == payerID!) {
+        /*if !(member.memberID == payerID!) {
             cell.name.text = member.memberName
-        }
+        }*/
+        cell.name.text = member.memberName
         return cell
     }
 

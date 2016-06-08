@@ -9,19 +9,28 @@
 import Foundation
 
 
-class StatisticGroupViewController: UIViewController, UICollectionViewDelegate {
+class StatisticGroupViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var groupName: UILabel!  //moze byt nemusi byt, mohlo by byt pekne niekde hore vidiet v akej som skupine
+    //@IBOutlet weak var groupName: UILabel!  //moze byt nemusi byt, mohlo by byt pekne niekde hore vidiet v akej som skupine
+    @IBOutlet weak var groupName: UINavigationItem!
     
-    var expense:Expense?
-    var name:String?
-    var members:Member?
-    var group:Group?
-    let reuseIdentifier = "memberCell"
+    var expense: Expense?
+    var name: String?
+    var members: Member?
+    var group: Group?
+    let reuseIdentifier = "statisticCell"
+    @IBOutlet weak var tableView: UITableView!
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> StatisticGroupViewCell {
-        
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! StatisticGroupViewCell
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (group?.members.count)!
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! StatisticGroupTableViewCell
         // Configure the cell
         cell.memberName.text = group?.members[indexPath.item].memberName
         
@@ -43,7 +52,8 @@ class StatisticGroupViewController: UIViewController, UICollectionViewDelegate {
                 }
             }
         }
-        cell.memberCredit.text = "\(balanceOfPayments)"
+        let balanceOfPaymentsAdapted = String(format: "%.2f", balanceOfPayments)
+        cell.memberCredit.text = "Stav: \(balanceOfPaymentsAdapted)Kč"
         if balanceOfPayments < 0 {
             cell.memberCredit.textColor = UIColor.redColor()
         }else{
@@ -52,18 +62,12 @@ class StatisticGroupViewController: UIViewController, UICollectionViewDelegate {
         cell.memberCreatedPayments.text = "zaplatil \(numPayments) výdajov"
         return cell
     }
-    
-    func numberOfSectionsInCollectionView(collectionView:UICollectionView) -> Int {
-        return 1
-    }
-    
-    //number of groups for current user
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (group?.members.count)!
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        groupName.text = group?.name
+        tableView.delegate = self
+        tableView.dataSource = self
+        groupName.title = group?.name
     }
 }
