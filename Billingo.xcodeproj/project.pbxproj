@@ -30,6 +30,8 @@
 		2DBA65D21CB66C78004B61BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA65D11CB66C78004B61BD /* LoginViewController.swift */; };
 		CAF560E6C6E97CB059E9CCFF /* Pods_Billingo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A1E5C67513B2F59FE5BF13A /* Pods_Billingo.framework */; };
 		E6339D4A1CE3ABF500D6A60A /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6339D491CE3ABF500D6A60A /* Payment.swift */; };
+		E66A4B341D076BB100D1B102 /* StatisticGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66A4B331D076BB100D1B102 /* StatisticGroupViewController.swift */; };
+		E66A4B361D079D2000D1B102 /* StatisticGroupViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66A4B351D079D2000D1B102 /* StatisticGroupViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,8 @@
 		7A1E5C67513B2F59FE5BF13A /* Pods_Billingo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Billingo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E11857B3ADA4F80DC47C66B3 /* Pods-Billingo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Billingo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Billingo/Pods-Billingo.debug.xcconfig"; sourceTree = "<group>"; };
 		E6339D491CE3ABF500D6A60A /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
+		E66A4B331D076BB100D1B102 /* StatisticGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticGroupViewController.swift; sourceTree = "<group>"; };
+		E66A4B351D079D2000D1B102 /* StatisticGroupViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticGroupViewCell.swift; sourceTree = "<group>"; };
 		FA22C51A1EDE73EF5E40C0AB /* Pods-Billingo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Billingo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Billingo/Pods-Billingo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +99,7 @@
 				1D5DEBD81CD20CE600798520 /* ExpenseTableViewCell.swift */,
 				1D24713F1CFF795200DA4FB3 /* AddExpenseTableViewCell.swift */,
 				2D4486091D06136F00D66A9F /* MemberTableViewCell.swift */,
+				E66A4B351D079D2000D1B102 /* StatisticGroupViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -108,6 +113,7 @@
 				1D09DF461CD6CFBB008D415F /* DetailExpenseViewController.swift */,
 				1D2471411CFF7BA400DA4FB3 /* AddExpenseViewController.swift */,
 				2D452E951D04651D0012B2C6 /* AddGroupViewController.swift */,
+				E66A4B331D076BB100D1B102 /* StatisticGroupViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -300,7 +306,9 @@
 				2DBA65D21CB66C78004B61BD /* LoginViewController.swift in Sources */,
 				2D2578881CAE534A00CEB3D2 /* GroupsViewController.swift in Sources */,
 				1D2471421CFF7BA400DA4FB3 /* AddExpenseViewController.swift in Sources */,
+				E66A4B341D076BB100D1B102 /* StatisticGroupViewController.swift in Sources */,
 				2D2578861CAE534A00CEB3D2 /* AppDelegate.swift in Sources */,
+				E66A4B361D079D2000D1B102 /* StatisticGroupViewCell.swift in Sources */,
 				2D39B2071CD0960F00E8803C /* KeychainWrapper.m in Sources */,
 				1D5DEBDB1CD2104500798520 /* Expense.swift in Sources */,
 				2D39B2031CD092F500E8803C /* GroupCollectionViewCell.swift in Sources */,
