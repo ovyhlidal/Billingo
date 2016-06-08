@@ -95,7 +95,8 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ExpenseTableViewCell
         let expense = expenses[indexPath.row]
         cell.expenseName.text = expense.expenseName
-        cell.expenseCost.text = "Cost: " + String(expense.cost)
+        let costAdapted = String(format: "%.2f", expense.cost)
+        cell.expenseCost.text = "Cost: " + String(costAdapted)
         cell.numberOfExpenseMembers.text = String(expense.payments.count)
         return cell
     }

@@ -72,7 +72,8 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         cell.usrName.text = user
         let debt = ((expense?.cost)! / Double((expense?.payments.count)!))
         //print(debt)
-        cell.userDebt.text = "Dlh:" + String(debt)
+        let debtAdapted = String(format: "%.2f", debt)
+        cell.userDebt.text = "Dlh:" + debtAdapted
         return cell
     }
 

@@ -147,7 +147,8 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             }else{
                 cell.groupInfo.textColor = UIColor.blackColor()
             }
-            cell.groupInfo.text = "tvoj stav : \(balanceSum)"
+            let balanceSumAdapted = String(format: "%.2f", balanceSum)
+            cell.groupInfo.text = "tvoj stav : \(balanceSumAdapted)"
         }
         return cell
     }
