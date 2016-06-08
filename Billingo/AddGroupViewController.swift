@@ -11,6 +11,7 @@ import Firebase
 
 class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet weak var groupNameTextField: UITextField!
     @IBOutlet weak var addMemberTextField: UITextField!
     @IBOutlet weak var membersTableView: UITableView!
     let firebase = Firebase(url: Constants.baseURL + "users/")
@@ -71,9 +72,6 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
                             print("Tady je chyba!")
                             print(error.description)
                     })
-
-                   
-            
                 }
             }
             
@@ -81,6 +79,20 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
             
         }
         
+    }
+    
+    func saveNewExpense(groupID:String, payments:[String:Double], payerID:String, reason:String, time:NSDate, totalCost:Double){
+        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)/expenses/")
+        let jsonExpense = ["reason":"\(reason)", "payer":"\(payerID)", "createTime":(Int.init(time.timeIntervalSince1970)), "totalCost":(totalCost)]
+        let newExpense = expensesRef.childByAutoId()
+        newExpense.setValue(jsonExpense)
+        newExpense.childByAppendingPath("payments").setValue(payments)
+    }
+    
+    
+    func createGroup() ->Void
+    {
+        let groupsRef = Firebase(url: Constants.baseURL + "groups/")
     }
 
     /*
