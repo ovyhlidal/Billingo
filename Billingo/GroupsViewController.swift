@@ -31,7 +31,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             NSUserDefaults.standardUserDefaults().removeObjectForKey("username")
             NSUserDefaults.standardUserDefaults().removeObjectForKey("password")
             serverRef.unauth()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popViewControllerAnimated(true)
         } // 3
         
         alert.addAction(firstAction) // 4
@@ -51,7 +51,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         subview.startAnimating()
         subview.center = self.view.center
         self.view.addSubview(subview)
-        loadAndDisplayGrubsFromServer()
+        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -64,6 +64,8 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        loadAndDisplayGrubsFromServer()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

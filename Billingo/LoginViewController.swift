@@ -172,6 +172,8 @@ class LoginViewController: UIViewController {
                                     // We are now logged in
                                     self.hideLoading()
                                     self.saveUser(username, password: password)
+                                    self.username.text = ""
+                                    self.password.text = ""
                                     self.performSegueWithIdentifier("showGroups", sender: nil)
                                     
                                 }        })

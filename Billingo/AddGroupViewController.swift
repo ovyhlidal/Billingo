@@ -120,9 +120,15 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         
         let groupMembers = newGroup.childByAppendingPath("members")
         
+        let usersRef = Firebase(url:  Constants.baseURL + "users/")
+        
         for memberID in membersID {
+            let userRef = usersRef.childByAppendingPath(memberID)
+            let userGroupRef = userRef.childByAppendingPath("groups")
+            let newUserGroupRef = userGroupRef.childByAutoId()
             let addMember = groupMembers.childByAutoId()
             addMember.setValue(memberID)
+            newUserGroupRef.setValue(addMember.key)
         }
         
         self.navigationController?.popViewControllerAnimated(true)
