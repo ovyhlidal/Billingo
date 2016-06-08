@@ -22,7 +22,7 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
         super.viewDidLoad()
         var indexOfMyId: Int = 0
         for index in 0 ..< groupMembers!.count {
-            if groupMembers![index].memberID == groupID {
+            if groupMembers![index].memberID == payerID {
                 indexOfMyId = index
                 break
             }
