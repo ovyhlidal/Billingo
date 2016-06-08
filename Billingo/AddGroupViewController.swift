@@ -46,13 +46,13 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
             
             for email in parts{
                 
-                print(email)
+                
                 
                 if self .isValidEmail(email) {
                     
                     let usersRef = Firebase(url: Constants.baseURL +  "users/")
                     usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
-                        
+                        print("snapshot block")
                         
                         if let name = snapshot.value["fullname"] as? String{
                             self.groupMembers.append(name)
@@ -61,6 +61,15 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
                             
                             self.addMemberTextField.text = "" // originalText.stringByReplacingOccurrencesOfString(email, withString: "")
                         }
+                        else
+                        {
+                            print("snapshot ale jinej protoze neni full name")
+                        }
+                        
+                        
+                        }, withCancelBlock: { error in
+                            print("Tady je chyba!")
+                            print(error.description)
                     })
 
                    
