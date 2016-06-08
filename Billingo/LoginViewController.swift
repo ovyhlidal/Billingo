@@ -259,7 +259,7 @@ class LoginViewController: UIViewController {
     }
     
     func saveNewUser(name:String, email:String){
-        let usersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
+        let usersRef = Firebase(url: Constants.baseURL + "users/")
         let myID = usersRef.authData.uid
         let jsonUser = ["fullname":"\(name)", "email":"\(email)"]
         let newUser = usersRef.childByAppendingPath("\(myID)")

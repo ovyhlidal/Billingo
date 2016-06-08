@@ -25,6 +25,7 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         members = NSMutableArray()
+        groupMembers = [String]()
         // Do any additional setup after loading the view.
         
     }
@@ -89,7 +90,7 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
                             self.addMemberTextField.text = "" // originalText.stringByReplacingOccurrencesOfString(email, withString: "")
                         }
                         
-                        print("snapshot ale jinej protoze neni full name")
+                        
                         }, withCancelBlock: { error in
                             print("Tady je chyba!")
                             print(error.description)

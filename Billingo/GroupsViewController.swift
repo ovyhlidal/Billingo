@@ -71,8 +71,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             if let indexPath = groupCollectionView!.indexPathForCell(sender as! GroupCollectionViewCell){
                 var group: Group
                 group = groups[indexPath.item]
-                let nav = segue.destinationViewController as! UINavigationController
-                let controller = nav.topViewController as! DetailGroupViewController
+                let controller = segue.destinationViewController as! DetailGroupViewController
                 controller.expenses = group.expenses
                 controller.groupMembers = group.members
                 controller.groupID = group.id
@@ -92,6 +91,8 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey("username")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("password")
+        
+        self.navigationController?.popViewControllerAnimated(true)
        
     }
     
@@ -121,9 +122,11 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             memberText += member.memberName
             memberText += ", "
         }
+        
         if(memberText.characters.count > 2){
             memberText.removeAtIndex(memberText.endIndex.predecessor().predecessor())   //remove last two letters ", "
         }
+        
         cell.groupMembers.text = memberText
         var balanceSum = 0.0
         if let myid = myID as String!{
@@ -173,6 +176,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                     self.subview.removeFromSuperview()
                 }
             })
+            
             selfUserRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if(snapshot.value is NSNull){           //if there is no group for this user stop loading
                     self.subview.stopAnimating()
