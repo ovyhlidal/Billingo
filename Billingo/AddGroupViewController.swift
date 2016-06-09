@@ -128,7 +128,7 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
             let newUserGroupRef = userGroupRef.childByAutoId()
             let addMember = groupMembers.childByAutoId()
             addMember.setValue(memberID)
-            newUserGroupRef.setValue(addMember.key)
+            newUserGroupRef.setValue(newGroup.key)
         }
         
         self.navigationController?.popViewControllerAnimated(true)
