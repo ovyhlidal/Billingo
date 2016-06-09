@@ -79,12 +79,13 @@ class LoginViewController: UIViewController {
                         if(!auth.uid.isEmpty)
                         {
                             self.saveUser(loginTextField.text!, password:  passwordTextField.text!)
+                            self.saveNewUser(nameTextField.text!, email: loginTextField.text!)
                             self.performSegueWithIdentifier("showGroups", sender: nil)
                             self.hideLoading()
                             self.resignFirstResponder()
                         }
                     })
-                    self.saveNewUser(nameTextField.text!, email: loginTextField.text!)
+                    
                 }
                 else
                 {
@@ -175,6 +176,7 @@ class LoginViewController: UIViewController {
                                     // We are now logged in
                                     self.hideLoading()
                                     self.saveUser(username, password: password)
+                                   // self.saveNewUser(nameTextField.text!, email: loginTextField.text!)
                                     self.username.text = ""
                                     self.password.text = ""
                                     
