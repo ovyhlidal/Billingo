@@ -176,6 +176,8 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 if snapshot.value is NSNull {
                     self.subview.stopAnimating()
                     self.subview.removeFromSuperview()
+                    
+                    self.showError("We did not find any groups for you")
                 }
             })
             
@@ -183,6 +185,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 if(snapshot.value is NSNull){           //if there is no group for this user stop loading
                     self.subview.stopAnimating()
                     self.subview.removeFromSuperview()
+                    self.showError("We did not find any groups for you.")
                 }else{
                     if let groupID = snapshot.value as? String {
                         let groupRef = Firebase(url:  Constants.baseURL + "groups/\(groupID)")
@@ -297,6 +300,24 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
             }
         })
     }
+    
+    func showError(errorMessage :String) -> Void {
+        let alertControllerSimple = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .Alert)
+        
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            
+        }
+        
+        alertControllerSimple.addAction(OKAction)
+        
+        self.presentViewController(alertControllerSimple, animated: true) {
+            // ...
+        }
+        
+        
+    }
+    
 }
 
 
