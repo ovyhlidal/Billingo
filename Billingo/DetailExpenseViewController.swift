@@ -44,6 +44,8 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         self.tableView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -82,7 +84,7 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         let debt = ((expense?.cost)! / Double((expense?.payments.count)!))
         //print(debt)
         let debtAdapted = String(format: "%.2f", debt)
-        cell.userDebt.text = "Dlh:" + debtAdapted
+        cell.userDebt.text = "Debt:" + debtAdapted
         return cell
     }
 
