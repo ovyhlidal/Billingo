@@ -196,10 +196,18 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                         groupRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                             if let groupName = snapshot.value["name"] as? String{
                                 let group = Group(id: groupID , name: groupName, members: groupMembers, expenses: groupExpenses)
-                                self.groups.append(group)
-                                let GroupIndex = self.groups.indexOf(group)
-                                self.loadAndDisplayGroupMembers(GroupIndex)
-                                self.loadGroupExpenseAndDisplaySum(GroupIndex)
+                                var isNew = true
+                                for group in self.groups {
+                                    if(group.id == groupID){
+                                        isNew = false
+                                    }
+                                }
+                                if(isNew){
+                                    self.groups.append(group)
+                                    let GroupIndex = self.groups.indexOf(group)
+                                    self.loadAndDisplayGroupMembers(GroupIndex)
+                                    self.loadGroupExpenseAndDisplaySum(GroupIndex)
+                                }
                             }
                             dispatch_async(dispatch_get_main_queue()) {
                                 self.groupCollectionView.reloadData()
