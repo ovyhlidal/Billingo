@@ -866,7 +866,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How much:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIj-Vs-xuB">
-                                <rect key="frame" x="20" y="114" width="95" height="21"/>
+                                <rect key="frame" x="20" y="120" width="95" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -927,7 +927,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VIj-Vs-xuB" firstAttribute="leading" secondItem="uZo-B5-lqC" secondAttribute="leading" constant="20" id="0FA-6Q-IKa"/>
-                            <constraint firstItem="VIj-Vs-xuB" firstAttribute="top" secondItem="6p1-Bc-4Pt" secondAttribute="bottom" constant="20" id="0Tf-0x-NjK"/>
+                            <constraint firstItem="VIj-Vs-xuB" firstAttribute="top" secondItem="6p1-Bc-4Pt" secondAttribute="bottom" constant="26" id="0Tf-0x-NjK"/>
                             <constraint firstItem="vZF-vB-BNq" firstAttribute="leading" secondItem="VIj-Vs-xuB" secondAttribute="trailing" constant="4" id="10V-dH-cab"/>
                             <constraint firstAttribute="bottom" secondItem="EcB-zp-Lrf" secondAttribute="bottom" id="206-32-X5O"/>
                             <constraint firstAttribute="trailing" secondItem="rOi-g5-nl4" secondAttribute="trailing" constant="16" id="26q-dc-0TH"/>
