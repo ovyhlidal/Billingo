@@ -31,6 +31,7 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
         
         tableView.delegate = self
         tableView.dataSource = self
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
 
         // Do any additional setup after loading the view.
     }

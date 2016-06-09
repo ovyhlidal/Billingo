@@ -53,13 +53,13 @@ class StatisticGroupViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
         let balanceOfPaymentsAdapted = String(format: "%.2f", balanceOfPayments)
-        cell.memberCredit.text = "Stav: \(balanceOfPaymentsAdapted)Kč"
+        cell.memberCredit.text = "Balance: \(balanceOfPaymentsAdapted)Kč"
         if balanceOfPayments < 0 {
             cell.memberCredit.textColor = UIColor.redColor()
         }else{
             cell.memberCredit.textColor = UIColor.blackColor()
         }
-        cell.memberCreatedPayments.text = "zaplatil \(numPayments) výdajov"
+        cell.memberCreatedPayments.text = "Payed \(numPayments)"
         return cell
     }
 
@@ -69,5 +69,6 @@ class StatisticGroupViewController: UIViewController, UITableViewDelegate, UITab
         tableView.delegate = self
         tableView.dataSource = self
         groupName.title = group?.name
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
     }
 }

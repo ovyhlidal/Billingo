@@ -153,7 +153,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 cell.groupInfo.textColor = UIColor.blackColor()
             }
             let balanceSumAdapted = String(format: "%.2f", balanceSum)
-            cell.groupInfo.text = "tvoj stav : \(balanceSumAdapted)"
+            cell.groupInfo.text = "Your balance: \(balanceSumAdapted)"
         }
         return cell
     }
@@ -324,7 +324,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func getNameFromEmail(email:String, textField:UITextField){
-        let usersRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/users/")
+        let usersRef = Firebase(url: Constants.baseURL + "users/")
         usersRef.queryOrderedByChild("email").queryEqualToValue(email).observeSingleEventOfType(.ChildAdded, withBlock: {snapshot in
             if let name = snapshot.value["fullname"] as? String{
                 textField.text = name

@@ -40,10 +40,12 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         expenseCreateDate.text = dateFormatter.stringFromDate((expense?.expenseCreateDate)!)
         expenseCreator.text = expense?.expenseCreatorName
-        expenseCost.text = "Výdej: " + String((expense?.cost)!)
+        expenseCost.text = "Expense: " + String((expense?.cost)!)
         self.tableView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -82,7 +84,7 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
         let debt = ((expense?.cost)! / Double((expense?.payments.count)!))
         //print(debt)
         let debtAdapted = String(format: "%.2f", debt)
-        cell.userDebt.text = "Dlh:" + debtAdapted
+        cell.userDebt.text = "Debt:" + debtAdapted
         return cell
     }
 
