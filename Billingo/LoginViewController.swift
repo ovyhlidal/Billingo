@@ -81,6 +81,7 @@ class LoginViewController: UIViewController {
                             self.saveUser(loginTextField.text!, password:  passwordTextField.text!)
                             self.performSegueWithIdentifier("showGroups", sender: nil)
                             self.hideLoading()
+                            self.resignFirstResponder()
                         }
                     })
                     self.saveNewUser(nameTextField.text!, email: loginTextField.text!)
@@ -176,6 +177,10 @@ class LoginViewController: UIViewController {
                                     self.saveUser(username, password: password)
                                     self.username.text = ""
                                     self.password.text = ""
+                                    
+                                    self.username.resignFirstResponder()
+                                    self.password.resignFirstResponder()
+                                    
                                     self.performSegueWithIdentifier("showGroups", sender: nil)
                                     
                                 }        })

@@ -208,7 +208,7 @@
 				TargetAttributes = {
 					2D2578811CAE534A00CEB3D2 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = AXC2TW43H3;
+						DevelopmentTeam = XH5SF2JUW3;
 					};
 				};
 			};
@@ -435,7 +435,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Billingo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mu.Billingo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mu.Billingo.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Billingo/Billingo-Bridging-Header.h";
@@ -454,7 +454,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Billingo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mu.Billingo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mu.Billingo.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Billingo/Billingo-Bridging-Header.h";
