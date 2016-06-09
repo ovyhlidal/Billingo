@@ -70,8 +70,6 @@ class LoginViewController: UIViewController {
             let passwordTextField = alertController.textFields![2] as UITextField
             
             self.firebase.createUser(loginTextField.text, password: passwordTextField.text) { (error: NSError!) in
-                
-                
                 self.showLoading()
                 if error == nil {
                     
@@ -90,18 +88,16 @@ class LoginViewController: UIViewController {
                 else
                 {
                     let alertControllerSimple = UIAlertController(title: "Error", message: "There is a problem with connection", preferredStyle: .Alert)
-                    
-                    
+                                        
                     let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                         // ...
+                        self.hideLoading()
                     }
                     alertControllerSimple.addAction(OKAction)
                     
                     self.presentViewController(alertControllerSimple, animated: true) {
                         // ...
                     }
-                    // handle errors!!
-                    
                 }
             }
             
@@ -278,11 +274,7 @@ class LoginViewController: UIViewController {
         
         // animations
         print("will appear")
-       
-        
-        
-        
-        
+
     }
     
     
