@@ -19,9 +19,9 @@ class DetailExpenseViewController: UIViewController, UITableViewDataSource, UITa
     
     var expense: Expense?
     
-    @IBAction func backToDetailGroupView(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
+//    @IBAction func backToDetailGroupView(sender: AnyObject) {
+//        dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
