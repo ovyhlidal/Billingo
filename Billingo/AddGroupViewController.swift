@@ -24,6 +24,8 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
+        
         members = NSMutableArray()
         groupMembers = [String]()
         // Do any additional setup after loading the view.

@@ -20,6 +20,8 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
+
         var indexOfMyId: Int = 0
         for index in 0 ..< groupMembers!.count {
             if groupMembers![index].memberID == payerID {
