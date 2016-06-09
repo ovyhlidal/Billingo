@@ -18,7 +18,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    let firebase = Firebase(url: "https://glowing-heat-6814.firebaseio.com")
+    let firebase = Firebase(url: "https://billingo.firebaseio.com")
     
     
     

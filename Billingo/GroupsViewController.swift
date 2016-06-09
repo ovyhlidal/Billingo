@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 struct Constants {
-    static let baseURL = "https://glowing-heat-6814.firebaseio.com/"
+    static let baseURL = "https://billingo.firebaseio.com/"
 }
 
 class GroupsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
