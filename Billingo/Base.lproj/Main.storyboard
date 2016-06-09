@@ -612,7 +612,7 @@
                                             <outlet property="expenseCost" destination="T7O-D7-mcx" id="PMt-bQ-zgT"/>
                                             <outlet property="expenseName" destination="ms2-xR-nSA" id="kaO-HG-gaw"/>
                                             <outlet property="numberOfExpenseMembers" destination="zat-ZD-33k" id="9ol-LZ-Gkn"/>
-                                            <segue destination="GGT-zq-NVc" kind="showDetail" action="showViewController:sender:" id="JPp-1r-uGK"/>
+                                            <segue destination="GGT-zq-NVc" kind="show" identifier="showExpenseDetail" action="showDetailViewController:sender:" id="izH-eD-MDs"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -854,7 +854,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
-                                <blurEffect style="light"/>
+                                <blurEffect style="extraLight"/>
                             </visualEffectView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="vZF-vB-BNq">
                                 <rect key="frame" x="119" y="116" width="465" height="30"/>

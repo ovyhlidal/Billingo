@@ -53,13 +53,13 @@ class StatisticGroupViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
         let balanceOfPaymentsAdapted = String(format: "%.2f", balanceOfPayments)
-        cell.memberCredit.text = "Balance: \(balanceOfPaymentsAdapted)Kč"
+        cell.memberCredit.text = "Amount: \(balanceOfPaymentsAdapted)Kč"
         if balanceOfPayments < 0 {
             cell.memberCredit.textColor = UIColor.redColor()
         }else{
             cell.memberCredit.textColor = UIColor.blackColor()
         }
-        cell.memberCreatedPayments.text = "Payed \(numPayments)"
+        cell.memberCreatedPayments.text = "Payed for: \(numPayments)"
         return cell
     }
 

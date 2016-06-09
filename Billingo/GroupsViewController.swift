@@ -18,7 +18,20 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
     @IBOutlet weak var groupCollectionView: UICollectionView!
     @IBOutlet weak var addGroupButton: UIButton!
     var myID: String?
-    //var currentUser: String? //added
+    var groups : Array = [Group]()
+    let subview: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+    let reuseIdentifier = "groupCell"
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        subview.startAnimating()
+        subview.center = self.view.center
+        self.view.addSubview(subview)
+        
+        
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+    
     
     @IBAction func showMenu(sender: MenuButton) {
         let alert = UIAlertController(title: "Billingo", message: "", preferredStyle: .ActionSheet) // 1
@@ -39,21 +52,7 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
         presentViewController(alert, animated: true, completion:nil) // 6
-
-    }
-   
-    var groups : Array = [Group]()
-    let subview: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-    let reuseIdentifier = "groupCell"
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        subview.startAnimating()
-        subview.center = self.view.center
-        self.view.addSubview(subview)
         
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(animated: Bool) {

@@ -46,50 +46,65 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
     @IBAction func addExpense(sender: AnyObject) {
         if self.expenseName.text!.characters.count > 0 {
             if self.expenseCost.text!.characters.count > 0 {
-                var reason: String
-                var totalCost: Double
-                reason = expenseName.text!
-                totalCost = Double.init(expenseCost.text!)!
-                let time: NSDate = NSDate()
+                let expenseCostAdapted = expenseCost.text!.stringByReplacingOccurrencesOfString(",", withString: ".")
+                
                 var count: Int = 0
-                
-                var payments: [String:Double] = [:]
-                var list = [AddExpenseTableViewCell]()
-                
-                for section in 0 ..< 1 {
-                    let rowCount = tableView.numberOfRowsInSection(section)
-                    //var list = [AddExpenseTableViewCell]()
+                for i in expenseCostAdapted.characters {
+                    if i == "." {
+                        count += 1
+                    }
+                }
+                if count <= 1 {
+                    var reason: String
+                    var totalCost: Double
                     
-                    for row in 0 ..< rowCount {
-                        let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section)) as! AddExpenseTableViewCell
-                        list.append(cell)
+                    reason = expenseName.text!
+                    totalCost = Double.init(expenseCostAdapted)!
+                    let time: NSDate = NSDate()
+                    var count: Int = 0
+                    
+                    var payments: [String:Double] = [:]
+                    var list = [AddExpenseTableViewCell]()
+                    
+                    for section in 0 ..< 1 {
+                        let rowCount = tableView.numberOfRowsInSection(section)
+                        //var list = [AddExpenseTableViewCell]()
+                        
+                        for row in 0 ..< rowCount {
+                            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section)) as! AddExpenseTableViewCell
+                            list.append(cell)
+                        }
+                        
+                        for cell in list {
+                            if cell.isTrue {
+                                count += 1
+                                //payments[cell.name.text!] = String.init(totalCost/(Double.init(count) + 1))
+                                //payments["a031b1f3-4b7a-447b-8174-f6ac25b8a6e5"] = totalCost/(Double.init(count) + 1)
+                            }
+                        }
                     }
                     
+                    var index: Int = 0
+                    payments[payerID!] = totalCost/(Double.init(count + 1))
                     for cell in list {
                         if cell.isTrue {
-                            count += 1
-                            //payments[cell.name.text!] = String.init(totalCost/(Double.init(count) + 1))
-                            //payments["a031b1f3-4b7a-447b-8174-f6ac25b8a6e5"] = totalCost/(Double.init(count) + 1)
+                            if cell.name.text == groupMembers![index].memberName {
+                                payments[groupMembers![index].memberID] = totalCost/(Double.init(count + 1))
+                            }
                         }
+                        index += 1
                     }
+                    //let paymentCost = String.init(totalCost/Double.init(count))
+                    
+                    //let payment = Payment()
+                    //let payment1 = Payment()
+                    saveNewExpense(groupID!, payments: payments, payerID: payerID!, reason: reason, time: time, totalCost: totalCost)
+                    self.navigationController!.popViewControllerAnimated(true)
                 }
-                
-                var index: Int = 0
-                payments[payerID!] = totalCost/(Double.init(count + 1))
-                for cell in list {
-                    if cell.isTrue {
-                        if cell.name.text == groupMembers![index].memberName {
-                            payments[groupMembers![index].memberID] = totalCost/(Double.init(count + 1))
-                        }
-                    }
-                    index += 1
+                else {
+                    self.showError("Wrong number format!")
+                    expenseCost.text = ""
                 }
-                //let paymentCost = String.init(totalCost/Double.init(count))
-                
-                //let payment = Payment()
-                //let payment1 = Payment()
-                saveNewExpense(groupID!, payments: payments, payerID: payerID!, reason: reason, time: time, totalCost: totalCost)
-                self.navigationController!.popViewControllerAnimated(true)
             }
             else {
                 self.showError("You need to add cost!")
