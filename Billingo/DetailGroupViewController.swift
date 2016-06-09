@@ -43,7 +43,6 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewWillAppear(animated: Bool) {
         self.tableView.reloadData()
         if expenses.isEmpty {
-            self.showError("We did not find any expenses for you")
             statisticButton.enabled = false
         }
 
@@ -107,21 +106,6 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         cell.numberOfExpenseMembers.text = " Members: " + String(expense.payments.count)
         return cell
     }
-    
-    func showError(errorMessage :String) -> Void {
-        let alertControllerSimple = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .Alert)
-        
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            
-        }
-        
-        alertControllerSimple.addAction(OKAction)
-        
-        self.presentViewController(alertControllerSimple, animated: true) {
-            // ...
-        }
-
-    }
+    	
     // MARK: - Table view data source
 }
