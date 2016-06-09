@@ -20,6 +20,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     var myID: String?
     var groupID: String?
     var group: Group?
+    @IBOutlet weak var statisticButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func backToGroupsView(sender: AnyObject) {
@@ -42,7 +43,7 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewWillAppear(animated: Bool) {
         self.tableView.reloadData()
         if expenses.isEmpty {
-            self.showError("We did not find any expenses for you")
+            statisticButton.enabled = false
         }
 
         let name = "Pattern~\("DetailGroupViewController")"
@@ -102,24 +103,9 @@ class DetailGroupViewController: UIViewController, UITableViewDataSource, UITabl
         cell.expenseName.text = expense.expenseName
         let costAdapted = String(format: "%.2f", expense.cost)
         cell.expenseCost.text = "Cost: " + String(costAdapted)
-        cell.numberOfExpenseMembers.text = String(expense.payments.count)
+        cell.numberOfExpenseMembers.text = " Members: " + String(expense.payments.count)
         return cell
     }
-    
-    func showError(errorMessage :String) -> Void {
-        let alertControllerSimple = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .Alert)
-        
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            
-        }
-        
-        alertControllerSimple.addAction(OKAction)
-        
-        self.presentViewController(alertControllerSimple, animated: true) {
-            // ...
-        }
-
-    }
+    	
     // MARK: - Table view data source
 }
