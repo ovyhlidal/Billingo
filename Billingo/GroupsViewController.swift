@@ -232,9 +232,17 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let userRef = Firebase(url:  Constants.baseURL + "users/\(memberID)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     let name = (snapshot.value as? String)!
-                    group.members.append(Member(memberName: name, memberID: memberID))
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.groupCollectionView.reloadData()
+                    var newMember = true
+                    for member in group.members {
+                        if(member.memberID == memberID){
+                            newMember = false
+                        }
+                    }
+                    if(newMember){
+                        group.members.append(Member(memberName: name, memberID: memberID))
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.groupCollectionView.reloadData()
+                        }
                     }
                 })
             }
@@ -245,7 +253,6 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
         let group = groups[groupIndex!]
         let expensesRef = Firebase(url:  Constants.baseURL + "groups/\(group.id)/expenses/")
         expensesRef.observeEventType(.ChildAdded, withBlock: {snapshot in
-        
             let payments:[Payment] = []
             let expenseID = snapshot.key
             if let expenseName = snapshot.value["reason"] as? String,
@@ -256,10 +263,18 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let expenseCreatorName = snapshot.value as? String{
                         let expense = Expense(expenseId: expenseID, expenseName: expenseName, expenseCreateDate: NSDate(timeIntervalSince1970: expenseCreateDate), expenseCreatorName: expenseCreatorName, expenseCreatorID:  expenseCreatorID, cost: cost, payments: payments)
+                        var newExpense = true
+                        for oldExpenses in self.groups[groupIndex!].expenses {
+                            if(oldExpenses.expenseId == expense.expenseId){
+                                newExpense = false
+                            }
+                        }
+                        if(newExpense){
                             self.groups[groupIndex!].expenses.append(expense)
-                        self.loadPaymants(groupIndex, expenseIndex: self.groups[groupIndex!].expenses.indexOf(expense))
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.groupCollectionView.reloadData()
+                            self.loadPaymants(groupIndex, expenseIndex: self.groups[groupIndex!].expenses.indexOf(expense))
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.groupCollectionView.reloadData()
+                            }
                         }
                     }
                 })
@@ -277,9 +292,17 @@ class GroupsViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let userRef = Firebase(url:  Constants.baseURL + "users/\(snapshot.key)/fullname")
                 userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if let name = snapshot.value as? String{
-                        group.expenses[expenseIndex!].payments.append(Payment(userID: userID,userName: name, cost: cost ))
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.groupCollectionView.reloadData()
+                        var newPayment = true
+                        for payment in group.expenses[expenseIndex!].payments {
+                            if((payment.userID == userID) && (payment.cost == cost) && (payment.userName == name)){
+                                newPayment = false
+                            }
+                        }
+                        if(newPayment){
+                            group.expenses[expenseIndex!].payments.append(Payment(userID: userID,userName: name, cost: cost ))
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.groupCollectionView.reloadData()
+                            }
                         }
                     }
                 })
