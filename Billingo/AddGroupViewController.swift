@@ -67,9 +67,6 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         if (!addMemberTextField.text!.isEmpty) {
             // Create a NSCharacterSet of delimiters.
             
-            var originalText = addMemberTextField.text!
-            
-            
             let separators = NSCharacterSet(charactersInString: ":,; ")
             // Split based on characters.
             let parts = addMemberTextField.text!.componentsSeparatedByCharactersInSet(separators)
@@ -164,6 +161,15 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
         
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
         return cell!
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            validMembers.removeObjectsAtIndexes(NSIndexSet(index: indexPath.row))
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        } else if editingStyle == .Insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        }
     }
     
 }
