@@ -53,12 +53,15 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
             else
             {
                 // alert Add some members!
+                
+                self.showError("Add at least one member!")
             }
             
         }
         else
         {
             // alert Fill Name of Group!
+            self.showError("Enter name of your group!")
         }
     }
     
@@ -171,5 +174,24 @@ class AddGroupViewController: UIViewController, UITextViewDelegate, UITableViewD
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
+    
+    
+    func showError(errorMessage :String) -> Void {
+        let alertControllerSimple = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .Alert)
+        
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            
+        }
+        
+        alertControllerSimple.addAction(OKAction)
+        
+        self.presentViewController(alertControllerSimple, animated: true) {
+            // ...
+        }
+      
+        
+    }
+
     
 }
