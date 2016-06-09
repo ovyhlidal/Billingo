@@ -116,7 +116,7 @@ class AddExpenseViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func saveNewExpense(groupID:String, payments:[String:Double], payerID:String, reason:String, time:NSDate, totalCost:Double){
-        let expensesRef = Firebase(url: "https://glowing-heat-6814.firebaseio.com/groups/\(groupID)/expenses/")
+        let expensesRef = Firebase(url: Constants.baseURL + "groups/\(groupID)/expenses/")
         let jsonExpense = ["reason":"\(reason)", "payer":"\(payerID)", "createTime":(Int.init(time.timeIntervalSince1970)), "totalCost":(totalCost)]
         let newExpense = expensesRef.childByAutoId()
         newExpense.setValue(jsonExpense)
